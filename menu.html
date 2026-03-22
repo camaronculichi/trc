@@ -11,6 +11,12 @@
         
         body {
             font-family: 'Poppins', sans-serif;
+            background-image: url('FONDOT.PNG');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
         }
         
         .logo-font {
@@ -37,13 +43,9 @@
         }
 
         .menu-section {
-            background-image: url('FONDOT.PNG');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background: transparent !important;
         }
 
-        /* CAROUSEL AUTOMÁTICO (fade cada 2 segundos) */
         .auto-gallery {
             position: relative;
             height: 280px;
@@ -72,19 +74,17 @@
         }
     </style>
 </head>
-<body class="bg-[#0a1f1c] text-white overflow-x-hidden">
+<body class="text-white overflow-x-hidden">
 
     <!-- HEADER -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-xl border-b border-white/10">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <!-- FLECHA PARA REGRESAR AL INDEX.HTML -->
             <a href="index.html" 
                class="flex items-center gap-3 text-white hover:text-[#ff8c00] transition-colors group">
                 <img src="FLECHA.PNG" alt="Regresar" class="w-10 h-10 drop-shadow-lg group-active:scale-90 transition-transform">
                 <span class="text-sm font-medium tracking-widest hidden md:block">REGRESAR AL INICIO</span>
             </a>
 
-            <!-- LOGO -->
             <div class="flex items-center justify-center">
                 <img src="logo.png" alt="Logo Restaurante" class="h-16 w-auto drop-shadow-2xl">
             </div>
@@ -101,10 +101,10 @@
             </h1>
         </div>
 
-        <!-- 7 CATEGORÍAS (CARDS) -->
+        <!-- 13 CATEGORÍAS -->
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             <a href="#entradas" class="category-card block rounded-3xl overflow-hidden shadow-2xl h-80 relative">
-                <img src="ENTRADAS.png" class="w-full h-full object-cover">
+                <img src="ENTRADAS.PNG" class="w-full h-full object-cover">
                 <div class="absolute bottom-8 left-8 right-8">
                     <div class="bg-black/70 backdrop-blur-md px-8 py-5 rounded-2xl">
                         <h2 class="text-4xl font-bold logo-font">ENTRADAS</h2>
@@ -131,7 +131,7 @@
             </a>
 
             <a href="#platillos" class="category-card block rounded-3xl overflow-hidden shadow-2xl h-80 relative">
-                <img src="PLATILLOS_DE_CAMARONES.png" class="w-full h-full object-cover">
+                <img src="PLATILLOS_DE_CAMARONES.PNG" class="w-full h-full object-cover">
                 <div class="absolute bottom-8 left-8 right-8">
                     <div class="bg-black/70 backdrop-blur-md px-8 py-5 rounded-2xl">
                         <h2 class="text-4xl font-bold logo-font"><br>CAMARONES</h2>
@@ -149,8 +149,8 @@
             </a>
 
             <a href="#caldos" class="category-card block rounded-3xl overflow-hidden shadow-2xl h-80 relative">
-                <img src="CALDOS.png" class="w-full h-full object-cover">
-                <div class="absolute bottom-5 left-1/2 -translante-x-1/2">
+                <img src="CALDOS.PNG" class="w-full h-full object-cover">
+                <div class="absolute bottom-5 left-1/2 -translate-x-1/2">
                     <div class="bg-black/70 backdrop-blur-md px-5 py-5 rounded-2xl">
                         <h2 class="text-4xl font-bold logo-font text-center">CALDOS</h2>
                     </div>
@@ -165,27 +165,78 @@
                     </div>
                 </div>
             </a>
+
+            <!-- NUEVAS 6 CATEGORÍAS -->
+            <a href="#filetes" class="category-card block rounded-3xl overflow-hidden shadow-2xl h-80 relative">
+                <img src="FILETES.PNG" class="w-full h-full object-cover">
+                <div class="absolute bottom-8 left-8 right-8">
+                    <div class="bg-black/70 backdrop-blur-md px-8 py-5 rounded-2xl">
+                        <h2 class="text-4xl font-bold logo-font">FILETES</h2>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#kids" class="category-card block rounded-3xl overflow-hidden shadow-2xl h-80 relative">
+                <img src="KIDS.PNG" class="w-full h-full object-cover">
+                <div class="absolute bottom-8 left-8 right-8">
+                    <div class="bg-black/70 backdrop-blur-md px-8 py-5 rounded-2xl">
+                        <h2 class="text-4xl font-bold logo-font">KIDS</h2>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#tacos" class="category-card block rounded-3xl overflow-hidden shadow-2xl h-80 relative">
+                <img src="TACOS.PNG" class="w-full h-full object-cover">
+                <div class="absolute bottom-8 left-8 right-8">
+                    <div class="bg-black/70 backdrop-blur-md px-8 py-5 rounded-2xl">
+                        <h2 class="text-4xl font-bold logo-font">TACOS</h2>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#postre" class="category-card block rounded-3xl overflow-hidden shadow-2xl h-80 relative">
+                <img src="POSTRE.PNG" class="w-full h-full object-cover">
+                <div class="absolute bottom-8 left-8 right-8">
+                    <div class="bg-black/70 backdrop-blur-md px-8 py-5 rounded-2xl">
+                        <h2 class="text-4xl font-bold logo-font">POSTRE</h2>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#pescadofrito" class="category-card block rounded-3xl overflow-hidden shadow-2xl h-80 relative">
+                <img src="PESCADO_FRITO.PNG" class="w-full h-full object-cover">
+                <div class="absolute bottom-8 left-8 right-8">
+                    <div class="bg-black/70 backdrop-blur-md px-8 py-5 rounded-2xl">
+                        <h2 class="text-4xl font-bold logo-font">PESCADO FRITO</h2>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#molcajetes" class="category-card block rounded-3xl overflow-hidden shadow-2xl h-80 relative">
+                <img src="MOLCAJETES.PNG" class="w-full h-full object-cover">
+                <div class="absolute bottom-8 left-8 right-8">
+                    <div class="bg-black/70 backdrop-blur-md px-8 py-5 rounded-2xl">
+                        <h2 class="text-4xl font-bold logo-font">MOLCAJETES</h2>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 
-    <!-- SECCIONES INDEPENDIENTES (cada una con su carrusel automático) -->
-    <div class="space-y-24 pb-24">
+    <!-- SECCIONES -->
+    <div class="space-y-5 pb-5">
 
         <!-- ENTRADAS -->
-        <section id="entradas" class="menu-section py-20">
+        <section id="entradas" class="menu-section py-5">
             <div class="max-w-5xl mx-auto px-6">
                 <h2 class="text-5xl font-bold logo-font text-center mb-12">ENTRADAS</h2>
-                
-                <!-- CARRUSEL AUTOMÁTICO -->
-                <div class="auto-gallery mx-auto mb-12">
+                <div class="auto-gallery mx-auto mb-8">
                     <div class="slides">
-                        <img src="galeentradas1.png" class="slide active" alt="Entradas 1">
-                        <img src="galeentradas2.png" class="slide" alt="Entradas 2">
-                        <img src="galeentradas3.png" class="slide" alt="Entradas 3">
+                        <img src="galeentradas1.png" class="slide active" alt="">
+                        <img src="galeentradas2.png" class="slide" alt="">
+                        <img src="galeentradas3.png" class="slide" alt="">
                     </div>
                 </div>
-
-                <!-- Lista de productos -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>AGUACHILES</span><span class="text-[#ff8c00]">$170</span></div>
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>CHICHARRÓN DE PESCADO (orden)</span><span class="text-[#ff8c00]">$235</span></div>
@@ -201,10 +252,9 @@
         </section>
 
         <!-- TOSTADAS -->
-        <section id="tostadas" class="menu-section py-20">
-            <div class="max-w-5xl mx-auto px-6">
+        <section id="tostadas" class="menu-section py-12">
+            <div class="max-w-2xl mx-auto px-9">
                 <h2 class="text-5xl font-bold logo-font text-center mb-12">TOSTADAS</h2>
-                
                 <div class="auto-gallery mx-auto mb-12">
                     <div class="slides">
                         <img src="galeTOSTADAS1.PNG" class="slide active" alt="">
@@ -212,7 +262,6 @@
                         <img src="galeTOSTADAS3.PNG" class="slide" alt="">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>CEVICHE DE PESCADO</span><span class="text-[#ff8c00]">$35</span></div>
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>CEVICHE DE CAMARÓN</span><span class="text-[#ff8c00]">$55</span></div>
@@ -234,7 +283,6 @@
         <section id="ceviche" class="menu-section py-20">
             <div class="max-w-5xl mx-auto px-6">
                 <h2 class="text-5xl font-bold logo-font text-center mb-12">CEVICHES</h2>
-                
                 <div class="auto-gallery mx-auto mb-12">
                     <div class="slides">
                         <img src="galeCEVICHES1.PNG" class="slide active" alt="">
@@ -242,7 +290,6 @@
                         <img src="galeCEVICHES3.PNG" class="slide" alt="">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>DE PESCADO</span><span class="text-[#ff8c00]">$175</span></div>
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>1/2 ORDEN PESCADO</span><span class="text-[#ff8c00]">$130</span></div>
@@ -260,7 +307,6 @@
         <section id="platillos" class="menu-section py-20">
             <div class="max-w-5xl mx-auto px-6">
                 <h2 class="text-5xl font-bold logo-font text-center mb-12">PLATILLOS DE CAMARONES</h2>
-                
                 <div class="auto-gallery mx-auto mb-12">
                     <div class="slides">
                         <img src="galePLATILLOS_DE_CAMARONES1.PNG" class="slide active" alt="">
@@ -268,10 +314,9 @@
                         <img src="galePLATILLOS_DE_CAMARONES3.PNG" class="slide" alt="">
                     </div>
                 </div>
-
                 <div class="space-y-10">
                     <div>
-                        <h3 class="text-2xl font-bold mb-6 text-[#ff8c00]">FILETES</h3>
+                        <h3 class="text-2xl font-bold mb-6 text-[#ff8c00]">CAMARONES</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
                             <div class="flex justify-between border-b border-white/10 pb-4"><span>EMPANIZADO</span><span class="text-[#ff8c00]">$170</span></div>
                             <div class="flex justify-between border-b border-white/10 pb-4"><span>1/2 ORDEN </span><span class="text-[#ff8c00]">$120</span></div>
@@ -284,24 +329,12 @@
                         </div>
                     </div>
                     <div>
-                        <h3 class="text-2xl font-bold mb-6 text-[#ff8c00]">CAMARONES</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
-                            <div class="flex justify-between border-b border-white/10 pb-4"><span>EMPANIZADOS</span><span class="text-[#ff8c00]">$170</span></div>
-                            <div class="flex justify-between border-b border-white/10 pb-4"><span>MOJO DE AJO</span><span class="text-[#ff8c00]">$170</span></div>
-                            <div class="flex justify-between border-b border-white/10 pb-4"><span>A LA DIABLA</span><span class="text-[#ff8c00]">$170</span></div>
-                            <div class="flex justify-between border-b border-white/10 pb-4"><span>AL COCO</span><span class="text-[#ff8c00]">$180</span></div>
-                            <div class="flex justify-between border-b border-white/10 pb-4"><span>PHILADELPHIA</span><span class="text-[#ff8c00]">$180</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <!-- COCKTELES -->
         <section id="cockteles" class="menu-section py-20">
             <div class="max-w-5xl mx-auto px-6">
                 <h2 class="text-5xl font-bold logo-font text-center mb-12">COCKTELES</h2>
-                
                 <div class="auto-gallery mx-auto mb-12">
                     <div class="slides">
                         <img src="galeCOCKTELES1.PNG" class="slide active" alt="">
@@ -309,7 +342,6 @@
                         <img src="galeCOCKTELES3.PNG" class="slide" alt="">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>CHICO</span><span class="text-[#ff8c00]">$85</span></div>
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>MIXTO </span><span class="text-[#ff8c00]">$95</span></div>
@@ -325,7 +357,6 @@
         <section id="caldos" class="menu-section py-20">
             <div class="max-w-5xl mx-auto px-6">
                 <h2 class="text-5xl font-bold logo-font text-center mb-12">CALDOS</h2>
-                
                 <div class="auto-gallery mx-auto mb-12">
                     <div class="slides">
                         <img src="galeCALDOS1.PNG" class="slide active" alt="">
@@ -333,7 +364,6 @@
                         <img src="galeCALDOS3.PNG" class="slide" alt="">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>DE PESCADO</span><span class="text-[#ff8c00]">$110</span></div>
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>MIXTO</span><span class="text-[#ff8c00]">$145</span></div>
@@ -347,7 +377,6 @@
         <section id="bebidas" class="menu-section py-20">
             <div class="max-w-5xl mx-auto px-6">
                 <h2 class="text-5xl font-bold logo-font text-center mb-12">BEBIDAS</h2>
-                
                 <div class="auto-gallery mx-auto mb-12">
                     <div class="slides">
                         <img src="galeBEBIDAS1.PNG" class="slide active" alt="">
@@ -355,7 +384,6 @@
                         <img src="galeBEBIDAS3.PNG" class="slide" alt="">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>REFRESCO 500ml</span><span class="text-[#ff8c00]">$35</span></div>
                     <div class="flex justify-between border-b border-white/10 pb-4"><span>LIMONADA NATURAL</span><span class="text-[#ff8c00]">$35</span></div>
@@ -364,16 +392,137 @@
                 </div>
             </div>
         </section>
+
+        <!-- === NUEVAS SECCIONES === -->
+
+        <!-- FILETES -->
+        <section id="filetes" class="menu-section py-20">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-5xl font-bold logo-font text-center mb-12">FILETES</h2>
+                <div class="auto-gallery mx-auto mb-12">
+                    <div class="slides">
+                        <img src="galeFILETES1.PNG" class="slide active" alt="">
+                        <img src="galeFILETES2.PNG" class="slide" alt="">
+                        <img src="galeFILETES3.PNG" class="slide" alt="">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>FILETE DE PESCADO EMPANIZADO</span><span class="text-[#ff8c00]">$135</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>1/2 ORDEN</span><span class="text-[#ff8c00]">$95</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>FILETE A LA DIABLA</span><span class="text-[#ff8c00]">$140</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>FILETE AL MOJO DE AJO</span><span class="text-[#ff8c00]">$140</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>FILETE AL CHIPOTLE</span><span class="text-[#ff8c00]">$140</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>FILETE A LA VERACRUZANA</span><span class="text-[#ff8c00]">$150</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>FILETE A LA PLANCHA</span><span class="text-[#ff8c00]">$140</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>FILETE SALSA VERDE</span><span class="text-[#ff8c00]">$140</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>FILETE CULICHI</span><span class="text-[#ff8c00]">$160</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KIDS -->
+        <section id="kids" class="menu-section py-20">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-5xl font-bold logo-font text-center mb-12">KIDS</h2>
+                <div class="auto-gallery mx-auto mb-12">
+                    <div class="slides">
+                        <img src="galeKIDS1.PNG" class="slide active" alt="">
+                        <img src="galeKIDS2.PNG" class="slide" alt="">
+                        <img src="galeKIDS3.PNG" class="slide" alt="">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>NUGETS DE POLLO C/PAPAS</span><span class="text-[#ff8c00]">$95</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>HAMBURGUESA DE RES C/PAPAS</span><span class="text-[#ff8c00]">$95</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>ORDEN DE PAPAS </span><span class="text-[#ff8c00]">$60</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TACOS -->
+        <section id="tacos" class="menu-section py-20">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-5xl font-bold logo-font text-center mb-12">TACOS</h2>
+                <div class="auto-gallery mx-auto mb-12">
+                    <div class="slides">
+                        <img src="galeTACOS1.PNG" class="slide active" alt="">
+                        <img src="galeTACOS2.PNG" class="slide" alt="">
+                        <img src="galeTACOS3.PNG" class="slide" alt="">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>TACO CULICHI</span><span class="text-[#ff8c00]">$50</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>TACO CAPEADO</span><span class="text-[#ff8c00]">$50</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>TACO TOCINETA</span><span class="text-[#ff8c00]">$50</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>TACO DE ATUN</span><span class="text-[#ff8c00]">$65</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>QUESADILLA DE CAMARON</span><span class="text-[#ff8c00]">$50</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- POSTRE -->
+        <section id="postre" class="menu-section py-20">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-5xl font-bold logo-font text-center mb-12">POSTRE</h2>
+                <div class="auto-gallery mx-auto mb-12">
+                    <div class="slides">
+                        <img src="galePOSTRE1.PNG" class="slide active" alt="">
+                        <img src="galePOSTRE2.PNG" class="slide" alt="">
+                        <img src="galePOSTRE3.PNG" class="slide" alt="">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>PAY</span><span class="text-[#ff8c00]">$70</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>PASTEL</span><span class="text-[#ff8c00]">$80</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESCADO FRITO -->
+        <section id="pescadofrito" class="menu-section py-20">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-5xl font-bold logo-font text-center mb-12">PESCADO FRITO</h2>
+                <div class="auto-gallery mx-auto mb-12">
+                    <div class="slides">
+                        <img src="galePESCADOFRITO1.PNG" class="slide active" alt="">
+                        <img src="galePESCADOFRITO2.PNG" class="slide" alt="">
+                        <img src="galePESCADOFRITO3.PNG" class="slide" alt="">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>PESCADO ENTERO FRITO</span><span class="text-[#ff8c00]">$175 KG</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOLCAJETES -->
+        <section id="molcajetes" class="menu-section py-20">
+            <div class="max-w-5xl mx-auto px-6">
+                <h2 class="text-5xl font-bold logo-font text-center mb-12">MOLCAJETES</h2>
+                <div class="auto-gallery mx-auto mb-12">
+                    <div class="slides">
+                        <img src="galeMOLCAJETES1.PNG" class="slide active" alt="">
+                        <img src="galeMOLCAJETES2.PNG" class="slide" alt="">
+                        <img src="galeMOLCAJETES3.PNG" class="slide" alt="">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 text-lg">
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>MOLCAJETE GUACAMOLE</span><span class="text-[#ff8c00]">$90</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>MOLCAJETE MATA CRUDAS</span><span class="text-[#ff8c00]">$199</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>MOLCAJETE CULIACAN</span><span class="text-[#ff8c00]">$199</span></div>
+                    <div class="flex justify-between border-b border-white/10 pb-4"><span>MOLCAJETE SINALOENSE</span><span class="text-[#ff8c00]">$199</span></div>
+                </div>
+            </div>
+        </section>
+
     </div>
 
     <script>
-        // Carruseles automáticos (cada 2 segundos)
         function initCarousels() {
             const galleries = document.querySelectorAll('.auto-gallery');
             galleries.forEach(gallery => {
                 const slides = gallery.querySelectorAll('.slide');
                 if (slides.length <= 1) return;
-                
                 let current = 0;
                 function showNext() {
                     slides[current].classList.remove('active');
@@ -384,7 +533,6 @@
             });
         }
 
-        // Smooth scroll a las secciones
         document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', function(e) {
                 const target = document.querySelector(this.getAttribute('href'));

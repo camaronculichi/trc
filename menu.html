@@ -9,16 +9,17 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500&display=swap');
         
-        body {
+        html, body {
             font-family: 'Poppins', sans-serif;
             background-image: url('FONDOT.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             color: white;
             margin: 0;
+            padding: 0;
         }
         
         .logo-font { font-family: 'Playfair Display', serif; }
@@ -30,7 +31,7 @@
             border-radius: 1.75rem;
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            padding: 14px;
+            padding: 12px;
             background: rgba(0, 0, 0, 0.2);
         }
         
@@ -58,14 +59,14 @@
             transform: scale(1.07);
         }
 
-        /* Texto sin fondo - solo letra */
+        /* Texto sin ningún fondo - solo letra */
         .category-label {
             text-align: center;
             padding: 8px 0;
         }
 
         .category-label h2 {
-            font-size: 1.8rem;
+            font-size: 1.75rem;
             font-weight: 500;
             letter-spacing: 0.04em;
             text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9),
@@ -101,7 +102,6 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
         }
         
         .modal.show { opacity: 1; transform: scale(1); }
@@ -111,11 +111,15 @@
             backdrop-filter: blur(14px);
         }
 
-        /* Optimizaciones para móviles */
-        @media (max-width: 640px) {
+        /* Corrección específica para iPhone */
+        @media (max-width: 768px) {
+            html, body {
+                background-attachment: scroll;
+                background-size: cover;
+            }
             .category-card {
                 padding: 10px;
-                border-radius: 1.5rem;
+                margin-bottom: 1rem;
             }
             .category-image-container {
                 border-radius: 1.25rem;
@@ -127,8 +131,8 @@
                 height: 180px;
             }
             main {
-                padding-top: 6.5rem;
-                padding-bottom: 4rem;
+                padding-top: 6rem;
+                padding-bottom: 3rem;
             }
         }
     </style>
@@ -152,7 +156,7 @@
         MENÚ
     </h1>
 
-    <div class="space-y-8 sm:space-y-10">
+    <div class="space-y-8">
 
         <button data-modal="entradas" class="category-card w-full aspect-video relative">
             <div class="category-image-container">
@@ -301,7 +305,7 @@
 
 </main>
 
-<!-- ==================== MODALES ==================== -->
+<!-- ==================== MODALES COMPLETOS ==================== -->
 
 <div id="modal-entradas" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
     <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
@@ -613,7 +617,6 @@
 </div>
 
 <script>
-    // Animación al hacer scroll
     const cards = document.querySelectorAll('.category-card');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {

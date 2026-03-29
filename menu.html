@@ -11,7 +11,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-image: url('FONDOT.png');
+            background-image: url('FONDOT.PNG');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -26,22 +26,56 @@
         .category-card {
             opacity: 0;
             transform: translateY(80px);
-            transition: opacity 0.9s ease-out, transform 0.9s ease-out;
-            border-radius: 1.5rem;
+            transition: all 0.9s ease-out;
+            border-radius: 1.75rem;
             overflow: hidden;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.2);
         }
         
         .category-card.appear { opacity: 1; transform: translateY(0); }
 
         .category-card:hover {
-            transform: scale(1.03) translateY(-10px);
+            transform: scale(1.03) translateY(-8px);
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+        }
+
+        .category-image-container {
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .category-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .category-card:hover .category-image-container img {
+            transform: scale(1.07);
+        }
+
+        /* Texto sin fondo - solo letra */
+        .category-label {
+            text-align: center;
+            padding: 8px 0;
+        }
+
+        .category-label h2 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9),
+                         0 2px 4px rgba(0, 0, 0, 0.7);
+            color: white;
         }
 
         .auto-gallery {
             position: relative;
-            height: 220px;
+            height: 200px;
             overflow: hidden;
             border-radius: 1rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
@@ -61,9 +95,9 @@
 
         .modal {
             opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.45s cubic-bezier(0.34, 1.1, 0.64, 1.1);
-            background-image: url('FONDOT.png');
+            transform: scale(0.95);
+            transition: all 0.4s cubic-bezier(0.34, 1.1, 0.64, 1.1);
+            background-image: url('FONDOT.PNG');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -73,145 +107,192 @@
         .modal.show { opacity: 1; transform: scale(1); }
 
         .modal-content {
-            background: rgba(5, 5, 15, 0.82);
-            backdrop-filter: blur(12px);
+            background: rgba(5, 5, 15, 0.88);
+            backdrop-filter: blur(14px);
+        }
+
+        /* Optimizaciones para móviles */
+        @media (max-width: 640px) {
+            .category-card {
+                padding: 10px;
+                border-radius: 1.5rem;
+            }
+            .category-image-container {
+                border-radius: 1.25rem;
+            }
+            .category-label h2 {
+                font-size: 1.5rem;
+            }
+            .auto-gallery {
+                height: 180px;
+            }
+            main {
+                padding-top: 6.5rem;
+                padding-bottom: 4rem;
+            }
         }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
-    <div class="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
-        <a href="index.html" class="flex items-center gap-3 text-white hover:text-orange-400 transition-colors">
-            <img src="FLECHA.PNG" alt="Regresar" class="w-10 h-10">
-            <span class="text-sm font-medium tracking-wider hidden sm:block">REGRESAR AL INICIO</span>
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2 text-white hover:text-orange-400 transition-colors">
+            <img src="FLECHA.PNG" alt="Regresar" class="w-9 h-9">
+            <span class="text-xs font-medium tracking-wider hidden sm:block">REGRESAR AL INICIO</span>
         </a>
-        <img src="logo.png" alt="Logo" class="h-16 w-auto">
-        <div class="w-10"></div>
+        <img src="logo.png" alt="Logo" class="h-14 w-auto">
+        <div class="w-9"></div>
     </div>
 </header>
 
-<main class="pt-28 pb-24 px-5 sm:px-6 max-w-5xl mx-auto">
+<main class="pt-24 pb-16 px-4 sm:px-6 max-w-5xl mx-auto">
 
-    <h1 class="logo-font text-5xl sm:text-6xl font-bold text-center text-[#ff8c00] mb-14 tracking-wider">
+    <h1 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-12 tracking-wider">
         MENÚ
     </h1>
 
-    <div class="space-y-10">
+    <div class="space-y-8 sm:space-y-10">
 
         <button data-modal="entradas" class="category-card w-full aspect-video relative">
-            <img src="ENTRADAS.png" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">ENTRADAS</h2>
+            <div class="category-image-container">
+                <img src="ENTRADAS.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">ENTRADAS</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="tostadas" class="category-card w-full aspect-video relative">
-            <img src="TOSTADAS.PNG" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">TOSTADAS</h2>
+            <div class="category-image-container">
+                <img src="TOSTADAS.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">TOSTADAS</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="ceviche" class="category-card w-full aspect-video relative">
-            <img src="CEVICHES.PNG" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">CEVICHES</h2>
+            <div class="category-image-container">
+                <img src="CEVICHES.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">CEVICHES</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="platillos" class="category-card w-full aspect-video relative">
-            <img src="PLATILLOS_DE_CAMARONES.png" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">CAMARONES</h2>
+            <div class="category-image-container">
+                <img src="PLATILLOS_DE_CAMARONES.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">CAMARONES</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="cockteles" class="category-card w-full aspect-video relative">
-            <img src="COCKTELES.PNG" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">COCKTELES</h2>
+            <div class="category-image-container">
+                <img src="COCKTELES.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">COCKTELES</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="caldos" class="category-card w-full aspect-video relative">
-            <img src="CALDOS.png" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">CALDOS</h2>
+            <div class="category-image-container">
+                <img src="CALDOS.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">CALDOS</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="bebidas" class="category-card w-full aspect-video relative">
-            <img src="BEBIDAS.PNG" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">BEBIDAS</h2>
+            <div class="category-image-container">
+                <img src="BEBIDAS.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">BEBIDAS</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="filetes" class="category-card w-full aspect-video relative">
-            <img src="FILETES.png" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">FILETES</h2>
+            <div class="category-image-container">
+                <img src="FILETES.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">FILETES</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="kids" class="category-card w-full aspect-video relative">
-            <img src="KIDS.png" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">KIDS</h2>
+            <div class="category-image-container">
+                <img src="KIDS.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">KIDS</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="tacos" class="category-card w-full aspect-video relative">
-            <img src="TACOS.png" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">TACOS</h2>
+            <div class="category-image-container">
+                <img src="TACOS.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">TACOS</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="postre" class="category-card w-full aspect-video relative">
-            <img src="POSTRE.png" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">POSTRE</h2>
+            <div class="category-image-container">
+                <img src="POSTRE.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">POSTRE</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="pescadofrito" class="category-card w-full aspect-video relative">
-            <img src="PESCADO_FRITO.png" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">PESCADO FRITO</h2>
+            <div class="category-image-container">
+                <img src="PESCADO_FRITO.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">PESCADO FRITO</h2>
                 </div>
             </div>
         </button>
 
         <button data-modal="molcajetes" class="category-card w-full aspect-video relative">
-            <img src="MOLCAJETES.png" class="w-full h-full object-cover">
-            <div class="absolute inset-x-8 bottom-8 sm:inset-x-12 sm:bottom-12">
-                <div class="bg-black/75 backdrop-blur-xl px-10 py-6 rounded-2xl text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold logo-font">MOLCAJETES</h2>
+            <div class="category-image-container">
+                <img src="MOLCAJETES.png" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-x-0 bottom-6">
+                <div class="category-label">
+                    <h2 class="logo-font">MOLCAJETES</h2>
                 </div>
             </div>
         </button>
@@ -220,312 +301,312 @@
 
 </main>
 
-<!-- MODALES -->
+<!-- ==================== MODALES ==================== -->
 
 <div id="modal-entradas" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">ENTRADAS</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">ENTRADAS</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
                     <img src="galeentradas1.png" class="slide active" alt="">
                     <img src="galeentradas2.png" class="slide" alt="">
                     <img src="galeentradas3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>AGUACHILES</span><span class="text-[#ff8c00]">$170</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CHICHARRÓN DE PESCADO (orden)</span><span class="text-[#ff8c00]">$235</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>1/2 ORDEN CHICHARRÓN</span><span class="text-[#ff8c00]">$175</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>TOSTITOS C/CEVICHE DE PESCADO</span><span class="text-[#ff8c00]">$100</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>TOSTITOS C/CEVICHE DE CAMARÓN</span><span class="text-[#ff8c00]">$110</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>TOSTITOS MIXTOS</span><span class="text-[#ff8c00]">$120</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>ARROZ MARINERO</span><span class="text-[#ff8c00]">$160</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>SASHIMI DE ATÚN</span><span class="text-[#ff8c00]">$175</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CHICHARRÓN DE ATÚN</span><span class="text-[#ff8c00]">$230</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>AGUACHILES</span><span class="text-[#ff8c00]">$170</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CHICHARRÓN DE PESCADO (orden)</span><span class="text-[#ff8c00]">$235</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>1/2 ORDEN CHICHARRÓN</span><span class="text-[#ff8c00]">$175</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>TOSTITOS C/CEVICHE DE PESCADO</span><span class="text-[#ff8c00]">$100</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>TOSTITOS C/CEVICHE DE CAMARÓN</span><span class="text-[#ff8c00]">$110</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>TOSTITOS MIXTOS</span><span class="text-[#ff8c00]">$120</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>ARROZ MARINERO</span><span class="text-[#ff8c00]">$160</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>SASHIMI DE ATÚN</span><span class="text-[#ff8c00]">$175</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CHICHARRÓN DE ATÚN</span><span class="text-[#ff8c00]">$230</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-tostadas" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">TOSTADAS</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">TOSTADAS</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galeTOSTADAS1.PNG" class="slide active" alt="">
-                    <img src="galeTOSTADAS2.PNG" class="slide" alt="">
-                    <img src="galeTOSTADAS3.PNG" class="slide" alt="">
+                    <img src="galeTOSTADAS1.png" class="slide active" alt="">
+                    <img src="galeTOSTADAS2.png" class="slide" alt="">
+                    <img src="galeTOSTADAS3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CEVICHE DE PESCADO</span><span class="text-[#ff8c00]">$35</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CEVICHE DE CAMARÓN</span><span class="text-[#ff8c00]">$55</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CULICHI ESPECIAL</span><span class="text-[#ff8c00]">$60</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CAMARÓN ENTERO</span><span class="text-[#ff8c00]">$60</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>PULPO</span><span class="text-[#ff8c00]">$80</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CALLO</span><span class="text-[#ff8c00]">$70</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>SURIMI</span><span class="text-[#ff8c00]">$45</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>AGUACATE</span><span class="text-[#ff8c00]">$20</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>AGUACHILE</span><span class="text-[#ff8c00]">$60</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>ATÚN</span><span class="text-[#ff8c00]">$60</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>SINALOENSE</span><span class="text-[#ff8c00]">$80</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MANGO ATÚN</span><span class="text-[#ff8c00]">$80</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CEVICHE DE PESCADO</span><span class="text-[#ff8c00]">$35</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CEVICHE DE CAMARÓN</span><span class="text-[#ff8c00]">$55</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CULICHI ESPECIAL</span><span class="text-[#ff8c00]">$60</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CAMARÓN ENTERO</span><span class="text-[#ff8c00]">$60</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>PULPO</span><span class="text-[#ff8c00]">$80</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CALLO</span><span class="text-[#ff8c00]">$70</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>SURIMI</span><span class="text-[#ff8c00]">$45</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>AGUACATE</span><span class="text-[#ff8c00]">$20</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>AGUACHILE</span><span class="text-[#ff8c00]">$60</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>ATÚN</span><span class="text-[#ff8c00]">$60</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>SINALOENSE</span><span class="text-[#ff8c00]">$80</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MANGO ATÚN</span><span class="text-[#ff8c00]">$80</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-ceviche" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">CEVICHES</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">CEVICHES</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galeCEVICHES1.PNG" class="slide active" alt="">
-                    <img src="galeCEVICHES2.PNG" class="slide" alt="">
-                    <img src="galeCEVICHES3.PNG" class="slide" alt="">
+                    <img src="galeCEVICHES1.png" class="slide active" alt="">
+                    <img src="galeCEVICHES2.png" class="slide" alt="">
+                    <img src="galeCEVICHES3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>DE PESCADO</span><span class="text-[#ff8c00]">$175</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>1/2 ORDEN PESCADO</span><span class="text-[#ff8c00]">$130</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>DE PESCADO CAMPECHANO</span><span class="text-[#ff8c00]">$200</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>1/2 ORDEN CAMPECHANO</span><span class="text-[#ff8c00]">$145</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>DE CAMARÓN</span><span class="text-[#ff8c00]">$195</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>1/2 ORDEN CAMARON</span><span class="text-[#ff8c00]">$130</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CULICHI DE CAMARÓN</span><span class="text-[#ff8c00]">$200</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>1/2 ORDEN CULICHI CAMARON</span><span class="text-[#ff8c00]">$145</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>DE PESCADO</span><span class="text-[#ff8c00]">$175</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>1/2 ORDEN PESCADO</span><span class="text-[#ff8c00]">$130</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>DE PESCADO CAMPECHANO</span><span class="text-[#ff8c00]">$200</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>1/2 ORDEN CAMPECHANO</span><span class="text-[#ff8c00]">$145</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>DE CAMARÓN</span><span class="text-[#ff8c00]">$195</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>1/2 ORDEN CAMARON</span><span class="text-[#ff8c00]">$130</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CULICHI DE CAMARÓN</span><span class="text-[#ff8c00]">$200</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>1/2 ORDEN CULICHI CAMARON</span><span class="text-[#ff8c00]">$145</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-platillos" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">PLATILLOS DE CAMARONES</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">PLATILLOS DE CAMARONES</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galePLATILLOS_DE_CAMARONES1.PNG" class="slide active" alt="">
-                    <img src="galePLATILLOS_DE_CAMARONES2.PNG" class="slide" alt="">
-                    <img src="galePLATILLOS_DE_CAMARONES3.PNG" class="slide" alt="">
+                    <img src="galePLATILLOS_DE_CAMARONES1.png" class="slide active" alt="">
+                    <img src="galePLATILLOS_DE_CAMARONES2.png" class="slide" alt="">
+                    <img src="galePLATILLOS_DE_CAMARONES3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>EMPANIZADO</span><span class="text-[#ff8c00]">$170</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>1/2 ORDEN</span><span class="text-[#ff8c00]">$120</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MOJO DE AJO</span><span class="text-[#ff8c00]">$170</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>TOCINETA</span><span class="text-[#ff8c00]">$180</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>A LA DIABLA</span><span class="text-[#ff8c00]">$170</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>AL CHIPOTLE</span><span class="text-[#ff8c00]">$170</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>AL COCO</span><span class="text-[#ff8c00]">$180</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>PHILADELPHIA</span><span class="text-[#ff8c00]">$180</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>EMPANIZADO</span><span class="text-[#ff8c00]">$170</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>1/2 ORDEN</span><span class="text-[#ff8c00]">$120</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MOJO DE AJO</span><span class="text-[#ff8c00]">$170</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>TOCINETA</span><span class="text-[#ff8c00]">$180</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>A LA DIABLA</span><span class="text-[#ff8c00]">$170</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>AL CHIPOTLE</span><span class="text-[#ff8c00]">$170</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>AL COCO</span><span class="text-[#ff8c00]">$180</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>PHILADELPHIA</span><span class="text-[#ff8c00]">$180</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-cockteles" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">COCKTELES</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">COCKTELES</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galeCOCKTELES1.PNG" class="slide active" alt="">
-                    <img src="galeCOCKTELES2.PNG" class="slide" alt="">
-                    <img src="galeCOCKTELES3.PNG" class="slide" alt="">
+                    <img src="galeCOCKTELES1.png" class="slide active" alt="">
+                    <img src="galeCOCKTELES2.png" class="slide" alt="">
+                    <img src="galeCOCKTELES3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CHICO</span><span class="text-[#ff8c00]">$85</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MIXTO</span><span class="text-[#ff8c00]">$95</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MEDIANO</span><span class="text-[#ff8c00]">$110</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MIXTO</span><span class="text-[#ff8c00]">$135</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>GRANDE</span><span class="text-[#ff8c00]">$155</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MIXTO</span><span class="text-[#ff8c00]">$180</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CHICO</span><span class="text-[#ff8c00]">$85</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MIXTO</span><span class="text-[#ff8c00]">$95</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MEDIANO</span><span class="text-[#ff8c00]">$110</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MIXTO</span><span class="text-[#ff8c00]">$135</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>GRANDE</span><span class="text-[#ff8c00]">$155</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MIXTO</span><span class="text-[#ff8c00]">$180</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-caldos" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">CALDOS</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">CALDOS</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galeCALDOS1.PNG" class="slide active" alt="">
-                    <img src="galeCALDOS2.PNG" class="slide" alt="">
-                    <img src="galeCALDOS3.PNG" class="slide" alt="">
+                    <img src="galeCALDOS1.png" class="slide active" alt="">
+                    <img src="galeCALDOS2.png" class="slide" alt="">
+                    <img src="galeCALDOS3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>DE PESCADO</span><span class="text-[#ff8c00]">$110</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MIXTO</span><span class="text-[#ff8c00]">$145</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>DE CAMARÓN</span><span class="text-[#ff8c00]">$145</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CONSOME DE LITRO</span><span class="text-[#ff8c00]">$55</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>DE PESCADO</span><span class="text-[#ff8c00]">$110</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MIXTO</span><span class="text-[#ff8c00]">$145</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>DE CAMARÓN</span><span class="text-[#ff8c00]">$145</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CONSOME DE LITRO</span><span class="text-[#ff8c00]">$55</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-bebidas" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">BEBIDAS</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">BEBIDAS</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galeBEBIDAS1.PNG" class="slide active" alt="">
-                    <img src="galeBEBIDAS2.PNG" class="slide" alt="">
-                    <img src="galeBEBIDAS3.PNG" class="slide" alt="">
+                    <img src="galeBEBIDAS1.png" class="slide active" alt="">
+                    <img src="galeBEBIDAS2.png" class="slide" alt="">
+                    <img src="galeBEBIDAS3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>REFRESCO 500ml</span><span class="text-[#ff8c00]">$35</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>LIMONADA NATURAL</span><span class="text-[#ff8c00]">$35</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>LIMONADA MINERAL</span><span class="text-[#ff8c00]">$40</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>CORONA EXTRA Y VICTORIA</span><span class="text-[#ff8c00]">$37</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>REFRESCO 500ml</span><span class="text-[#ff8c00]">$35</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>LIMONADA NATURAL</span><span class="text-[#ff8c00]">$35</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>LIMONADA MINERAL</span><span class="text-[#ff8c00]">$40</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>CORONA EXTRA Y VICTORIA</span><span class="text-[#ff8c00]">$37</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-filetes" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">FILETES</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">FILETES</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galeFILETES1.PNG" class="slide active" alt="">
-                    <img src="galeFILETES2.PNG" class="slide" alt="">
-                    <img src="galeFILETES3.PNG" class="slide" alt="">
+                    <img src="galeFILETES1.png" class="slide active" alt="">
+                    <img src="galeFILETES2.png" class="slide" alt="">
+                    <img src="galeFILETES3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>FILETE DE PESCADO EMPANIZADO</span><span class="text-[#ff8c00]">$135</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>1/2 ORDEN</span><span class="text-[#ff8c00]">$95</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>FILETE A LA DIABLA</span><span class="text-[#ff8c00]">$140</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>FILETE AL MOJO DE AJO</span><span class="text-[#ff8c00]">$140</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>FILETE AL CHIPOTLE</span><span class="text-[#ff8c00]">$140</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>FILETE A LA VERACRUZANA</span><span class="text-[#ff8c00]">$150</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>FILETE A LA PLANCHA</span><span class="text-[#ff8c00]">$140</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>FILETE SALSA VERDE</span><span class="text-[#ff8c00]">$140</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>FILETE CULICHI</span><span class="text-[#ff8c00]">$160</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>FILETE DE PESCADO EMPANIZADO</span><span class="text-[#ff8c00]">$135</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>1/2 ORDEN</span><span class="text-[#ff8c00]">$95</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>FILETE A LA DIABLA</span><span class="text-[#ff8c00]">$140</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>FILETE AL MOJO DE AJO</span><span class="text-[#ff8c00]">$140</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>FILETE AL CHIPOTLE</span><span class="text-[#ff8c00]">$140</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>FILETE A LA VERACRUZANA</span><span class="text-[#ff8c00]">$150</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>FILETE A LA PLANCHA</span><span class="text-[#ff8c00]">$140</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>FILETE SALSA VERDE</span><span class="text-[#ff8c00]">$140</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>FILETE CULICHI</span><span class="text-[#ff8c00]">$160</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-kids" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">KIDS</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">KIDS</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galeKIDS1.PNG" class="slide active" alt="">
-                    <img src="galeKIDS2.PNG" class="slide" alt="">
-                    <img src="galeKIDS3.PNG" class="slide" alt="">
+                    <img src="galeKIDS1.png" class="slide active" alt="">
+                    <img src="galeKIDS2.png" class="slide" alt="">
+                    <img src="galeKIDS3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>NUGETS DE POLLO C/PAPAS</span><span class="text-[#ff8c00]">$95</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>HAMBURGUESA DE RES C/PAPAS</span><span class="text-[#ff8c00]">$95</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>ORDEN DE PAPAS</span><span class="text-[#ff8c00]">$60</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>NUGETS DE POLLO C/PAPAS</span><span class="text-[#ff8c00]">$95</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>HAMBURGUESA DE RES C/PAPAS</span><span class="text-[#ff8c00]">$95</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>ORDEN DE PAPAS</span><span class="text-[#ff8c00]">$60</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-tacos" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">TACOS</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">TACOS</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galeTACOS1.PNG" class="slide active" alt="">
-                    <img src="galeTACOS2.PNG" class="slide" alt="">
-                    <img src="galeTACOS3.PNG" class="slide" alt="">
+                    <img src="galeTACOS1.png" class="slide active" alt="">
+                    <img src="galeTACOS2.png" class="slide" alt="">
+                    <img src="galeTACOS3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>TACO CULICHI</span><span class="text-[#ff8c00]">$50</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>TACO CAPEADO</span><span class="text-[#ff8c00]">$50</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>TACO TOCINETA</span><span class="text-[#ff8c00]">$50</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>TACO DE ATUN</span><span class="text-[#ff8c00]">$65</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>QUESADILLA DE CAMARON</span><span class="text-[#ff8c00]">$50</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>TACO CULICHI</span><span class="text-[#ff8c00]">$50</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>TACO CAPEADO</span><span class="text-[#ff8c00]">$50</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>TACO TOCINETA</span><span class="text-[#ff8c00]">$50</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>TACO DE ATUN</span><span class="text-[#ff8c00]">$65</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>QUESADILLA DE CAMARON</span><span class="text-[#ff8c00]">$50</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-postre" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">POSTRE</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">POSTRE</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galePOSTRE1.PNG" class="slide active" alt="">
-                    <img src="galePOSTRE2.PNG" class="slide" alt="">
-                    <img src="galePOSTRE3.PNG" class="slide" alt="">
+                    <img src="galePOSTRE1.png" class="slide active" alt="">
+                    <img src="galePOSTRE2.png" class="slide" alt="">
+                    <img src="galePOSTRE3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>PAY</span><span class="text-[#ff8c00]">$70</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>PASTEL</span><span class="text-[#ff8c00]">$80</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>PAY</span><span class="text-[#ff8c00]">$70</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>PASTEL</span><span class="text-[#ff8c00]">$80</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-pescadofrito" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">PESCADO FRITO</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">PESCADO FRITO</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galePESCADOFRITO1.PNG" class="slide active" alt="">
-                    <img src="galePESCADOFRITO2.PNG" class="slide" alt="">
-                    <img src="galePESCADOFRITO3.PNG" class="slide" alt="">
+                    <img src="galePESCADOFRITO1.png" class="slide active" alt="">
+                    <img src="galePESCADOFRITO2.png" class="slide" alt="">
+                    <img src="galePESCADOFRITO3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>PESCADO ENTERO FRITO</span><span class="text-[#ff8c00]">$175 KG</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>PESCADO ENTERO FRITO</span><span class="text-[#ff8c00]">$175 KG</span></div>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-molcajetes" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal absolute top-6 right-6 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
-        <div class="p-8 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-10">MOLCAJETES</h2>
-            <div class="auto-gallery mx-auto mb-10">
+    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+        <button class="close-modal absolute top-5 right-5 text-5xl text-white/80 hover:text-[#ff8c00] z-20 transition">×</button>
+        <div class="p-6 sm:p-12">
+            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">MOLCAJETES</h2>
+            <div class="auto-gallery mx-auto mb-8">
                 <div class="slides">
-                    <img src="galeMOLCAJETES1.PNG" class="slide active" alt="">
-                    <img src="galeMOLCAJETES2.PNG" class="slide" alt="">
-                    <img src="galeMOLCAJETES3.PNG" class="slide" alt="">
+                    <img src="galeMOLCAJETES1.png" class="slide active" alt="">
+                    <img src="galeMOLCAJETES2.png" class="slide" alt="">
+                    <img src="galeMOLCAJETES3.png" class="slide" alt="">
                 </div>
             </div>
-            <div class="space-y-5 text-lg sm:text-xl">
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MOLCAJETE GUACAMOLE</span><span class="text-[#ff8c00]">$90</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MOLCAJETE MATA CRUDAS</span><span class="text-[#ff8c00]">$199</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MOLCAJETE CULIACAN</span><span class="text-[#ff8c00]">$199</span></div>
-                <div class="flex justify-between border-b border-white/20 pb-4"><span>MOLCAJETE SINALOENSE</span><span class="text-[#ff8c00]">$199</span></div>
+            <div class="space-y-4 text-base sm:text-lg">
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MOLCAJETE GUACAMOLE</span><span class="text-[#ff8c00]">$90</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MOLCAJETE MATA CRUDAS</span><span class="text-[#ff8c00]">$199</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MOLCAJETE CULIACAN</span><span class="text-[#ff8c00]">$199</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-3"><span>MOLCAJETE SINALOENSE</span><span class="text-[#ff8c00]">$199</span></div>
             </div>
         </div>
     </div>
@@ -541,7 +622,7 @@
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.18, rootMargin: '0px 0px -10% 0px' });
+    }, { threshold: 0.25 });
 
     cards.forEach(card => observer.observe(card));
 
@@ -568,7 +649,7 @@
 
     function closeModal(modal) {
         modal.classList.remove('show');
-        setTimeout(() => modal.classList.add('hidden', 'pointer-events-none'), 450);
+        setTimeout(() => modal.classList.add('hidden', 'pointer-events-none'), 400);
     }
 
     // Carrusel
@@ -582,7 +663,7 @@
                 current = (current + 1) % slides.length;
                 slides[current].classList.add('active');
             }
-            setInterval(next, 3400);
+            setInterval(next, 3500);
         });
     }
 

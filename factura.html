@@ -28,7 +28,6 @@
             position: relative;
         }
        
-        /* Flecha de regreso */
         .back-arrow {
             position: absolute;
             top: 15px;
@@ -108,7 +107,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Flecha de regreso -->
         <a href="index.html" class="back-arrow">←</a>
         
         <header>
@@ -173,7 +171,6 @@
         </div>
     </div>
 
-    <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
         emailjs.init({ publicKey: "RLyEAR8R7oizf8zfb" });
@@ -182,6 +179,38 @@
 
         function setTodayDate() {
             document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+        }
+
+        function compressImage(base64, callback) {
+            const img = new Image();
+            img.src = base64;
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 600;
+                const MAX_HEIGHT = 600;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                
+                // Calidad muy baja
+                photoData = canvas.toDataURL('image/jpeg', 0.25);
+                callback();
+            };
         }
 
         function uploadPhoto() {
@@ -193,8 +222,7 @@
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(ev) {
-                        photoData = ev.target.result;
-                        showPreview();
+                        compressImage(ev.target.result, showPreview);
                     };
                     reader.readAsDataURL(file);
                 }

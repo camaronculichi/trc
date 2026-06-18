@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Datos para Facturar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+       
+        :root { --primary: #1e3a8a; --accent: #3b82f6; }
+       
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+       
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f8fafc, #e0f2fe);
+            min-height: 100vh;
+            padding: 15px;
+        }
+       
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+       
+        /* Flecha de regreso */
+        .back-arrow {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            z-index: 10;
+            text-decoration: none;
+        }
+       
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+       
+        h1 { font-size: 1.8rem; }
+        .subtitle { opacity: 0.9; font-size: 1rem; margin-top: 5px; }
+       
+        .form-section { padding: 25px; }
+       
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+       
+        label { display: block; margin-bottom: 6px; font-weight: 500; color: #374151; }
+       
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+       
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); outline: none; }
+       
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+       
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+       
+        #sendBtn {
+            background: #10b981;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+       
+        .success {
+            background: #10b981;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 15px 0;
+            display: none;
+        }
+       
+        #preview img { max-width: 100%; border-radius: 12px; margin-top: 10px; }
+       
+        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Flecha de regreso -->
+        <a href="index.html" class="back-arrow">←</a>
+        
+        <header>
+            <h1>📤 Enviar Datos para Facturar</h1>
+            <p class="subtitle">Se enviará a Culichifacturas1@gmail.com</p>
+        </header>
+       
+        <div class="form-section">
+            <h2 class="section-title">📋 Datos del Cliente</h2>
+           
+            <label for="nombre">Nombre o Razón Social *</label>
+            <input type="text" id="nombre" placeholder="Ej. Elon reeve musk" required>
+           
+            <div class="row">
+                <div>
+                    <label for="rfc">RFC *</label>
+                    <input type="text" id="rfc" placeholder="Ej. TOMB920101AAA" maxlength="13" required>
+                </div>
+                <div>
+                    <label for="email">Tu Correo Electrónico *</label>
+                    <input type="email" id="email" placeholder="easytaptrc@gmail.com" required>
+                </div>
+            </div>
+            
+            <!-- Uso de CFDI como texto -->
+            <label for="uso_cfdi">Uso de CFDI</label>
+            <input type="text" id="uso_cfdi" placeholder="Ej. G03 - Gastos en general" value="G03 - Gastos en general">
+
+            <h2 class="section-title">🛒 Datos de la Compra</h2>
+           
+            <div class="row">
+                <div>
+                    <label for="restaurante">Restaurante</label>
+                    <input type="text" id="restaurante" placeholder="Ej. camarón culichi">
+                </div>
+                <div>
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha">
+                </div>
+            </div>
+           
+            <label for="total">Total de la cuenta *</label>
+            <input type="number" id="total" step="0.01" placeholder="1234.56" required>
+           
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" rows="3" placeholder="Algun comentario"></textarea>
+
+            <h2 class="section-title">📸 Foto del Ticket (obligatorios)</h2>
+            <video id="video" autoplay playsinline style="width:100%; border-radius:12px; background:#111;"></video>
+            <canvas id="canvas" style="display:none;"></canvas>
+           
+            <div style="display:flex; gap:10px; margin:15px 0;">
+                <button onclick="takePhoto()">📸 Tomar Foto</button>
+                <button onclick="startCamera()" style="background:#64748b;">🔄 Reiniciar Cámara</button>
+            </div>
+           
+            <div id="preview"></div>
+            
+            <button id="sendBtn" onclick="enviarDatos()">
+                🚀 Enviar Datos al Correo
+            </button>
+           
+            <div class="success" id="success">
+                ✅ Datos enviados correctamente a Culichifacturas1@gmail.com
+            </div>
+        </div>
+    </div>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        emailjs.init({ publicKey: "RLyEAR8R7oizf8zfb" });
+
+        let stream = null;
+        let photoData = null;
+
+        function setTodayDate() {
+            document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+        }
+
+        async function startCamera() {
+            const video = document.getElementById('video');
+            if (stream) stream.getTracks().forEach(track => track.stop());
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }});
+                video.srcObject = stream;
+            } catch (err) {
+                alert("No se pudo acceder a la cámara");
+            }
+        }
+
+        function takePhoto() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const preview = document.getElementById('preview');
+           
+            canvas.width = video.videoWidth || 800;
+            canvas.height = video.videoHeight || 600;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            photoData = canvas.toDataURL('image/jpeg', 0.8);
+           
+            preview.innerHTML = `
+                <p><strong>Foto capturada:</strong></p>
+                <img src="${photoData}" alt="Ticket">
+                <button onclick="clearPhoto()" style="background:#ef4444; margin-top:8px;">Eliminar Foto</button>
+            `;
+        }
+
+        function clearPhoto() {
+            document.getElementById('preview').innerHTML = '';
+            photoData = null;
+        }
+
+        async function enviarDatos() {
+            const btn = document.getElementById('sendBtn');
+            const success = document.getElementById('success');
+            const nombre = document.getElementById('nombre').value.trim();
+            const rfc = document.getElementById('rfc').value.trim().toUpperCase();
+            const email = document.getElementById('email').value.trim();
+            const total = document.getElementById('total').value;
+
+            if (!nombre || !rfc || !email || !total) {
+                alert("❌ Completa los campos obligatorios (*)");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Enviando...";
+
+            const templateParams = {
+                from_name: nombre,
+                rfc: rfc,
+                cliente_email: email,
+                uso_cfdi: document.getElementById('uso_cfdi').value || "G03",
+                restaurante: document.getElementById('restaurante').value || "No especificado",
+                fecha: document.getElementById('fecha').value,
+                total: total,
+                descripcion: document.getElementById('descripcion').value || "Sin descripción",
+                fecha_envio: new Date().toLocaleString('es-MX'),
+                photo: photoData || ""
+            };
+
+            try {
+                const response = await emailjs.send("service_rzqr157", "template_zrfgzam", templateParams);
+                console.log("✅ Éxito!", response);
+                success.style.display = 'block';
+                alert("✅ Datos enviados correctamente");
+            } catch (error) {
+                console.error("❌ Error:", error);
+                alert("Error al enviar: " + (error.text || error));
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "🚀 Enviar Datos al Correo";
+            }
+        }
+
+        window.onload = () => {
+            setTodayDate();
+            startCamera();
+        };
+    </script>
+</body>
+</html>

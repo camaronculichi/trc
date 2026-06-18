@@ -25,6 +25,19 @@
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             overflow: hidden;
+            position: relative;
+        }
+       
+        /* Flecha de regreso */
+        .back-arrow {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 32px;
+            color: white;
+            cursor: pointer;
+            z-index: 10;
+            text-decoration: none;
         }
        
         header {
@@ -91,17 +104,13 @@
         }
        
         #preview img { max-width: 100%; border-radius: 12px; margin-top: 10px; }
-       
-        #video {
-            width: 100%;
-            border-radius: 12px;
-            background: #111;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Flecha de regreso -->
+        <a href="index.html" class="back-arrow">←</a>
+        
         <header>
             <h1>📤 Enviar Datos para Facturar</h1>
             <p class="subtitle">Se enviará a Culichifacturas1@gmail.com</p>
@@ -148,13 +157,8 @@
 
             <h2 class="section-title">📸 Foto del Ticket</h2>
             
-            <video id="video" autoplay playsinline style="width:100%; border-radius:12px; background:#111; display:none;"></video>
-            <canvas id="canvas" style="display:none;"></canvas>
-           
-            <div style="display:flex; gap:10px; margin:15px 0; flex-wrap: wrap;">
-                <button onclick="startCamera()">📹 Abrir Cámara</button>
-                <button onclick="takePhoto()" id="btnCapture" style="display:none;">📸 Capturar Foto</button>
-                <button onclick="uploadPhoto()">📁 Agregar Archivo</button>
+            <div style="margin:15px 0;">
+                <button onclick="uploadPhoto()">📁 Agregar Foto (Galería o Cámara)</button>
             </div>
            
             <div id="preview"></div>
@@ -174,39 +178,10 @@
     <script>
         emailjs.init({ publicKey: "RLyEAR8R7oizf8zfb" });
 
-        let stream = null;
         let photoData = null;
 
         function setTodayDate() {
             document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
-        }
-
-        async function startCamera() {
-            const video = document.getElementById('video');
-            video.style.display = "block";
-            document.getElementById('btnCapture').style.display = "inline-block";
-            
-            if (stream) stream.getTracks().forEach(track => track.stop());
-            
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-                video.srcObject = stream;
-            } catch (err) {
-                alert("No se pudo acceder a la cámara.");
-            }
-        }
-
-        function takePhoto() {
-            const video = document.getElementById('video');
-            const canvas = document.getElementById('canvas');
-           
-            canvas.width = 640;
-            canvas.height = 480;
-            canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
-           
-            photoData = canvas.toDataURL('image/jpeg', 0.25); // Muy comprimido
-           
-            showPreview();
         }
 
         function uploadPhoto() {
@@ -230,7 +205,7 @@
         function showPreview() {
             const preview = document.getElementById('preview');
             preview.innerHTML = `
-                <p><strong>Foto capturada:</strong></p>
+                <p><strong>Foto seleccionada:</strong></p>
                 <img src="${photoData}" alt="Ticket">
                 <button onclick="clearPhoto()" style="background:#ef4444; margin-top:8px;">Eliminar Foto</button>
             `;

@@ -108,7 +108,44 @@
         </header>
        
         <div class="form-section">
-            <!-- ... (tus campos de formulario se mantienen igual) ... -->
+            <h2 class="section-title">📋 Datos del Cliente</h2>
+           
+            <label for="nombre">Nombre o Razón Social *</label>
+            <input type="text" id="nombre" placeholder="Ej. Elon reeve musk" required>
+           
+            <div class="row">
+                <div>
+                    <label for="rfc">RFC *</label>
+                    <input type="text" id="rfc" placeholder="Ej. TOMB920101AAA" maxlength="13" required>
+                </div>
+                <div>
+                    <label for="email">Tu Correo Electrónico *</label>
+                    <input type="email" id="email" placeholder="easytaptrc@gmail.com" required>
+                </div>
+            </div>
+            
+            <label for="uso_cfdi">Uso de CFDI</label>
+            <input type="text" id="uso_cfdi" placeholder="Ej. G03 - Gastos en general" value="G03 - Gastos en general">
+
+            <h2 class="section-title">🛒 Datos de la Compra</h2>
+           
+            <div class="row">
+                <div>
+                    <label for="restaurante">Restaurante</label>
+                    <input type="text" id="restaurante" placeholder="Ej. camarón culichi">
+                </div>
+                <div>
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha">
+                </div>
+            </div>
+           
+            <label for="total">Total de la cuenta *</label>
+            <input type="number" id="total" step="0.01" placeholder="1234.56" required>
+           
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" rows="3" placeholder="Algun comentario"></textarea>
+
             <h2 class="section-title">📸 Foto del Ticket</h2>
             
             <video id="video" autoplay playsinline style="width:100%; border-radius:12px; background:#111; display:none;"></video>
@@ -132,12 +169,17 @@
         </div>
     </div>
 
+    <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
         emailjs.init({ publicKey: "RLyEAR8R7oizf8zfb" });
 
         let stream = null;
         let photoData = null;
+
+        function setTodayDate() {
+            document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+        }
 
         async function startCamera() {
             const video = document.getElementById('video');
@@ -158,13 +200,11 @@
             const video = document.getElementById('video');
             const canvas = document.getElementById('canvas');
            
-            // Reducimos mucho el tamaño
-            canvas.width = 640;   // Ancho máximo
-            canvas.height = 480;  // Alto máximo
+            canvas.width = 640;
+            canvas.height = 480;
             canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
            
-            // Muy baja calidad para no pasar de 50KB
-            photoData = canvas.toDataURL('image/jpeg', 0.3);
+            photoData = canvas.toDataURL('image/jpeg', 0.25); // Muy comprimido
            
             showPreview();
         }
@@ -245,7 +285,7 @@
         }
 
         window.onload = () => {
-            document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+            setTodayDate();
         };
     </script>
 </body>

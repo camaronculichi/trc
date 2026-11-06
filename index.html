@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="is-loading">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Camarón Culichi</title>
+  <link rel="stylesheet" href="loader.css">
   <style>
     * {
       margin: 0;
@@ -133,11 +134,14 @@
     }
     .promo-content {
       position: relative;
-      max-width: 90%;
-      max-height: 85%;
+      max-width: 90vw;
     }
     .promo-content img {
-      width: 100%;
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 90vw;
+      max-height: 85vh;
       border-radius: 12px;
       box-shadow: 0 0 30px rgba(255,255,255,0.6);
     }
@@ -167,7 +171,25 @@
   </style>
 </head>
 <body>
-  <video autoplay muted loop playsinline id="bg-video">
+<!-- ==================== PANTALLA DE CARGA ==================== -->
+<div id="page-loader" role="status" aria-live="polite">
+    <div class="loader-orb">
+        <div class="loader-water">
+            <svg class="w2" viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0 20 Q75 0 150 20 T300 20 T450 20 T600 20 T750 20 T900 20 T1050 20 T1200 20 V40 H0 Z"/></svg>
+            <svg class="w1" viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0 20 Q75 0 150 20 T300 20 T450 20 T600 20 T750 20 T900 20 T1050 20 T1200 20 V40 H0 Z"/></svg>
+        </div>
+        <img src="logo.webp" alt="" class="loader-logo">
+    </div>
+    <div class="loader-text">Cargando<span class="loader-percent">0%</span></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+    <div class="loader-sea" aria-hidden="true">
+        <svg class="s1" viewBox="0 0 1440 200" preserveAspectRatio="none"><path d="M0 100 Q90 40 180 100 T360 100 T540 100 T720 100 T900 100 T1080 100 T1260 100 T1440 100 V200 H0 Z"/></svg>
+        <svg class="s2" viewBox="0 0 1440 200" preserveAspectRatio="none"><path d="M0 120 Q90 70 180 120 T360 120 T540 120 T720 120 T900 120 T1080 120 T1260 120 T1440 120 V200 H0 Z"/></svg>
+        <svg class="s3" viewBox="0 0 1440 200" preserveAspectRatio="none"><path d="M0 145 Q90 105 180 145 T360 145 T540 145 T720 145 T900 145 T1080 145 T1260 145 T1440 145 V200 H0 Z"/></svg>
+    </div>
+</div>
+
+  <video autoplay muted loop playsinline preload="auto" id="bg-video" data-preload>
     <source src="video1.mp4" type="video/mp4">
     Tu navegador no soporta videos.
   </video>
@@ -176,18 +198,18 @@
   <!-- Íconos sociales -->
   <div class="header">
     <a href="https://www.facebook.com/share/1CFk2kdY1V/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">
-      <img src="face.png" alt="Facebook" class="social-icon">
+      <img src="face.webp" alt="Facebook" class="social-icon">
     </a>
    
     <a href="https://wa.me/528714632883" target="_blank" rel="noopener noreferrer">
-      <img src="whats.png" alt="WhatsApp" class="social-icon">
+      <img src="whats.webp" alt="WhatsApp" class="social-icon">
     </a>
   </div>
 
   <!-- Promoción (aparece primero) -->
   <div class="promo-modal" id="promoModal">
     <div class="promo-content">
-      <img src="procion.png" alt="Promoción">
+      <img src="procion.webp" alt="Promoción">
       <div class="close-promo" onclick="closePromo()">×</div>
     </div>
   </div>
@@ -213,5 +235,6 @@
       }
     });
   </script>
+  <script src="loader.js"></script>
 </body>
 </html>

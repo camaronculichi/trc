@@ -1,0 +1,125 @@
+/* ===== Pantalla de carga con olas de mar ===== */
+html.is-loading, html.is-loading body { overflow: hidden !important; }
+
+#page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    background: radial-gradient(ellipse at top, #0e6f8f 0%, #06364f 55%, #021a2b 100%);
+    color: #fff;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    transition: opacity .6s ease, visibility .6s ease;
+    overflow: hidden;
+}
+#page-loader.loader-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* Círculo que se llena de agua según el progreso */
+.loader-orb {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(255, 255, 255, .08);
+    border: 3px solid rgba(255, 255, 255, .85);
+    box-shadow: 0 0 35px rgba(64, 200, 230, .55), inset 0 0 25px rgba(0, 0, 0, .35);
+    z-index: 2;
+}
+.loader-water {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    transform: translateY(100%);
+    transition: transform .45s ease-out;
+    background: linear-gradient(180deg, #3fc6e0 0%, #1b8fb5 60%, #0d5f86 100%);
+}
+.loader-water svg {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    width: 200%;
+    height: 22px;
+    margin-bottom: -1px;
+}
+.loader-water svg.w1 { fill: #3fc6e0; animation: loader-wave 2.2s linear infinite; }
+.loader-water svg.w2 { fill: rgba(63, 198, 224, .45); animation: loader-wave 3.4s linear infinite reverse; height: 26px; }
+.loader-logo {
+    position: absolute;
+    inset: 14px;
+    width: calc(100% - 28px);
+    height: calc(100% - 28px);
+    object-fit: contain;
+    z-index: 3;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .55));
+    animation: loader-bob 2.6s ease-in-out infinite;
+}
+
+.loader-text {
+    font-size: 1.05rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, .6);
+    z-index: 2;
+}
+.loader-percent { color: #ffb347; font-weight: 600; margin-left: 6px; }
+
+/* Barra de carga con efecto de oleaje */
+.loader-bar {
+    position: relative;
+    width: min(280px, 70vw);
+    height: 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .12);
+    border: 1px solid rgba(255, 255, 255, .35);
+    overflow: hidden;
+    z-index: 2;
+}
+.loader-bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0%;
+    border-radius: 999px;
+    transition: width .45s ease-out;
+    background: repeating-linear-gradient(110deg, #3fc6e0 0 14px, #1b8fb5 14px 28px);
+    background-size: 56px 100%;
+    animation: loader-stripes 1s linear infinite;
+    box-shadow: 0 0 12px rgba(63, 198, 224, .8);
+}
+
+/* Olas del fondo */
+.loader-sea {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 28vh;
+    min-height: 140px;
+    pointer-events: none;
+}
+.loader-sea svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+}
+.loader-sea .s1 { fill: rgba(63, 198, 224, .25); animation: loader-wave 9s linear infinite; bottom: 18px; }
+.loader-sea .s2 { fill: rgba(27, 143, 181, .45); animation: loader-wave 6s linear infinite reverse; bottom: 8px; }
+.loader-sea .s3 { fill: rgba(9, 85, 120, .85); animation: loader-wave 4s linear infinite; }
+
+@keyframes loader-wave { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes loader-bob { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
+@keyframes loader-stripes { from { background-position: 0 0; } to { background-position: 56px 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .loader-water svg, .loader-sea svg, .loader-logo, .loader-bar-fill { animation: none !important; }
+}

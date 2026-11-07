@@ -5,15 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú - Camarón Culichi</title>
     <link rel="stylesheet" href="loader.css">
+    <link rel="preconnect" href="https://firestore.googleapis.com">
     <link rel="preload" as="image" href="logo.webp">
-    <link rel="preload" as="image" href="FONDOT.webp">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
 
+        :root {
+            --fondo: url('FONDOT.webp');
+            --gal-ratio: 4 / 5;
+            --gal-n: 0.8;
+        }
+
         html, body {
             font-family: 'Poppins', sans-serif;
-            background-image: url('FONDOT.webp');
+            background-image: var(--fondo);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -53,6 +59,9 @@
             object-fit: cover;
             transition: transform 0.6s ease;
         }
+        .category-image-container.no-cover {
+            background: linear-gradient(135deg, #0e6f8f, #06364f 70%);
+        }
         .category-card:hover .category-image-container img {
             transform: scale(1.07);
         }
@@ -68,13 +77,18 @@
                          0 2px 4px rgba(0, 0, 0, 0.7);
             color: white;
         }
+
+        /* Carrusel de fotos de cada sección: formato vertical, más grande */
         .auto-gallery {
             position: relative;
-            height: 200px;
+            aspect-ratio: var(--gal-ratio);
+            width: min(100%, calc(68vh * var(--gal-n)));
+            margin-left: auto;
+            margin-right: auto;
             overflow: hidden;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            background: rgba(255,255,255,0.05);
+            border-radius: 1.25rem;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.55);
+            background: rgba(255,255,255,0.06);
         }
         .auto-gallery .slides img {
             position: absolute;
@@ -86,12 +100,30 @@
             transition: opacity 1.2s ease-in-out;
         }
         .auto-gallery .slides img.active { opacity: 1; }
+        .gallery-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            z-index: 2;
+        }
+        .gallery-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.5);
+            transition: all .3s ease;
+        }
+        .gallery-dots span.on { background: #ff8c00; width: 20px; }
 
         .modal {
             opacity: 0;
             transform: scale(0.95);
             transition: all 0.4s cubic-bezier(0.34, 1.1, 0.64, 1.1);
-            background-image: url('FONDOT.webp');
+            background-image: var(--fondo);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -138,9 +170,6 @@
             .category-label h2 {
                 font-size: 1.5rem;
             }
-            .auto-gallery {
-                height: 180px;
-            }
             main {
                 padding-top: 6rem;
                 padding-bottom: 3rem;
@@ -155,7 +184,7 @@
 <body class="overflow-x-hidden">
 
 <!-- ==================== PANTALLA DE CARGA ==================== -->
-<div id="page-loader" role="status" aria-live="polite">
+<div id="page-loader" role="status" aria-live="polite" data-manual>
     <div class="loader-orb">
         <div class="loader-water">
             <svg class="w2" viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0 20 Q75 0 150 20 T300 20 T450 20 T600 20 T750 20 T900 20 T1050 20 T1200 20 V40 H0 Z"/></svg>
@@ -178,541 +207,160 @@
             <img src="FLECHA.webp" alt="Regresar" class="w-9 h-9 object-contain">
             <span class="text-xs font-medium tracking-wider hidden sm:block">REGRESAR AL INICIO</span>
         </a>
-        <img src="logo.webp" alt="Camarón Culichi" class="h-20 w-auto drop-shadow-xl">
+        <img id="site-logo" src="logo.webp" alt="Camarón Culichi" class="h-20 w-auto drop-shadow-xl">
         <div class="w-9"></div>
     </div>
 </header>
 
-<main class="pt-24 pb-16 px-4 sm:px-6 max-w-5xl mx-auto">
-    <div class="space-y-6 sm:space-y-7 mt-12">
-        <button data-modal="entradas" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="ENTRADAS.webp" alt="Entradas" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">ENTRADAS</h2></div></div>
-        </button>
-        <button data-modal="tostadas" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="TOSTADAS.webp" alt="Tostadas" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">TOSTADAS</h2></div></div>
-        </button>
-        <button data-modal="ceviche" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="CEVICHES.webp" alt="Ceviches" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">CEVICHES</h2></div></div>
-        </button>
-        <button data-modal="platillos" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="PLATILLOS_DE_CAMARONES.webp" alt="Camarones" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">CAMARONES</h2></div></div>
-        </button>
-        <button data-modal="cockteles" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="COCKTELES.webp" alt="Cockteles" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">COCKTELES</h2></div></div>
-        </button>
-        <button data-modal="caldos" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="CALDOS.webp" alt="Caldos" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">CALDOS</h2></div></div>
-        </button>
-        <button data-modal="bebidas" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="BEBIDAS.webp" alt="Bebidas" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">BEBIDAS</h2></div></div>
-        </button>
-        <button data-modal="filetes" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="FILETES.webp" alt="Filetes" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">FILETES</h2></div></div>
-        </button>
-        <button data-modal="kids" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="KIDS.webp" alt="Para los niños" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">PARA LOS NIÑOS</h2></div></div>
-        </button>
-        <button data-modal="tacos" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="TACOS.webp" alt="Tacos" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">TACOS</h2></div></div>
-        </button>
-        <button data-modal="postre" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="POSTRE.webp" alt="Postres" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">POSTRES</h2></div></div>
-        </button>
-        <button data-modal="pescadofrito" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="PESCADO_FRITO.webp" alt="Pescado frito" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">PESCADO FRITO</h2></div></div>
-        </button>
-        <button data-modal="molcajetes" class="category-card w-full aspect-video relative">
-            <div class="category-image-container"><img src="MOLCAJETES.webp" alt="Molcajetes" decoding="async"></div>
-            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">MOLCAJETES</h2></div></div>
-        </button>
-    </div>
+<main class="pt-24 pb-10 px-4 sm:px-6 max-w-5xl mx-auto">
+    <div id="cards" class="space-y-6 sm:space-y-7 mt-12"></div>
 </main>
 
-<!-- ==================== MODALES ==================== -->
+<footer id="site-footer" class="max-w-5xl mx-auto px-4 pb-12 text-center text-white/85 text-sm space-y-2"></footer>
 
-<div id="modal-entradas" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">ENTRADAS</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galeentradas1.webp" class="slide active" alt="" loading="lazy">
-                    <img src="galeentradas2.webp" class="slide" alt="" loading="lazy">
-                    <img src="galeentradas3.webp" class="slide" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>AGUACHILES</span><span class="price">$175</span></div></div>
-                <div class="item"><div class="item-row"><span>CAMARÓN Y PULPO PARA PICAR</span><span class="price">$175</span></div></div>
-                <div class="item"><div class="item-row"><span>CHICHARRÓN DE PESCADO (orden)</span><span class="price">$235</span></div></div>
-                <div class="item"><div class="item-row sub"><span>1/2 ORDEN</span><span class="price">$175</span></div></div>
-                <div class="item"><div class="item-row"><span>TOSTITOS C/CEVICHE DE PESCADO</span><span class="price">$120</span></div></div>
-                <div class="item"><div class="item-row"><span>TOSTITOS C/CEVICHE DE CAMARÓN</span><span class="price">$130</span></div></div>
-                <div class="item"><div class="item-row"><span>TOSTITOS MIXTOS</span><span class="price">$140</span></div></div>
-                <div class="item">
-                    <div class="item-row"><span>ARROZ MARINERO</span><span class="price">$160</span></div>
-                    <p class="item-desc">Guisado con camarón, pulpo y surimi</p>
-                </div>
-                <div class="item"><div class="item-row"><span>SASHIMI DE ATÚN</span><span class="price">$175</span></div></div>
-                <div class="item"><div class="item-row"><span>CHICHARRÓN DE ATÚN</span><span class="price">$230</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
+<div id="modals"></div>
 
-<div id="modal-tostadas" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">TOSTADAS</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galeTOSTADAS1.webp" class="slide active" alt="" loading="lazy">
-                    <img src="galeTOSTADAS2.webp" class="slide" alt="" loading="lazy">
-                    <img src="galeTOSTADAS3.webp" class="slide" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>CEVICHE DE PESCADO</span><span class="price">$40</span></div></div>
-                <div class="item"><div class="item-row"><span>CEVICHE DE CAMARÓN</span><span class="price">$55</span></div></div>
-                <div class="item"><div class="item-row"><span>CULICHI ESPECIAL</span><span class="price">$60</span></div></div>
-                <div class="item"><div class="item-row"><span>CAMARÓN ENTERO</span><span class="price">$60</span></div></div>
-                <div class="item"><div class="item-row"><span>PULPO</span><span class="price">$80</span></div></div>
-                <div class="item"><div class="item-row"><span>CALLO</span><span class="price">$70</span></div></div>
-                <div class="item"><div class="item-row"><span>SURIMI</span><span class="price">$45</span></div></div>
-                <div class="item"><div class="item-row"><span>AGUACATE</span><span class="price">$30</span></div></div>
-                <div class="item"><div class="item-row"><span>AGUACHILE</span><span class="price">$60</span></div></div>
-                <div class="item"><div class="item-row"><span>ATÚN</span><span class="price">$60</span></div></div>
-                <div class="item">
-                    <div class="item-row"><span>LA SINALOENSE</span><span class="price">$80</span></div>
-                    <p class="item-desc">Ceviche de camarón, pulpo, camarón entero y salsas negras</p>
-                </div>
-                <div class="item"><div class="item-row"><span>MANGO ATÚN</span><span class="price">$80</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-ceviche" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">CEVICHES</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galeCEVICHES1.webp" class="slide active" alt="" loading="lazy">
-                    <img src="galeCEVICHES2.webp" class="slide" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>DE PESCADO</span><span class="price">$175</span></div></div>
-                <div class="item"><div class="item-row sub"><span>1/2 ORDEN</span><span class="price">$130</span></div></div>
-                <div class="item"><div class="item-row"><span>DE PESCADO CAMPECHANO</span><span class="price">$200</span></div></div>
-                <div class="item"><div class="item-row sub"><span>1/2 ORDEN</span><span class="price">$145</span></div></div>
-                <div class="item"><div class="item-row"><span>DE CAMARÓN</span><span class="price">$195</span></div></div>
-                <div class="item"><div class="item-row sub"><span>1/2 ORDEN</span><span class="price">$130</span></div></div>
-                <div class="item"><div class="item-row"><span>CULICHI DE CAMARÓN</span><span class="price">$200</span></div></div>
-                <div class="item"><div class="item-row sub"><span>1/2 ORDEN</span><span class="price">$145</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-platillos" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">CAMARONES</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galePLATILLOS_DE_CAMARONES1.webp" class="slide active" alt="" loading="lazy">
-                    <img src="galePLATILLOS_DE_CAMARONES2.webp" class="slide" alt="" loading="lazy">
-                    <img src="galePLATILLOS_DE_CAMARONES3.webp" class="slide" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>EMPANIZADOS</span><span class="price">$170</span></div></div>
-                <div class="item"><div class="item-row sub"><span>1/2 ORDEN</span><span class="price">$120</span></div></div>
-                <div class="item"><div class="item-row"><span>MOJO DE AJO</span><span class="price">$170</span></div></div>
-                <div class="item"><div class="item-row"><span>TOCINETA</span><span class="price">$180</span></div></div>
-                <div class="item"><div class="item-row"><span>A LA DIABLA</span><span class="price">$170</span></div></div>
-                <div class="item"><div class="item-row"><span>AL CHIPOTLE</span><span class="price">$170</span></div></div>
-                <div class="item"><div class="item-row"><span>AL COCO</span><span class="price">$180</span></div></div>
-                <div class="item"><div class="item-row"><span>PHILADELPHIA</span><span class="price">$180</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-cockteles" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">COCKTELES</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galeCOCKTELES1.webp" class="slide active" alt="" loading="lazy">
-                    <img src="galeCOCKTELES2.webp" class="slide" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>CHICO</span><span class="price">$85</span></div></div>
-                <div class="item"><div class="item-row sub"><span>CHICO MIXTO</span><span class="price">$95</span></div></div>
-                <div class="item"><div class="item-row"><span>MEDIANO</span><span class="price">$115</span></div></div>
-                <div class="item"><div class="item-row sub"><span>MEDIANO MIXTO</span><span class="price">$140</span></div></div>
-                <div class="item"><div class="item-row"><span>GRANDE</span><span class="price">$155</span></div></div>
-                <div class="item"><div class="item-row sub"><span>GRANDE MIXTO</span><span class="price">$180</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-caldos" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">CALDOS</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galeCALDOS1.webp" class="slide active" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>DE PESCADO</span><span class="price">$125</span></div></div>
-                <div class="item"><div class="item-row"><span>MIXTO</span><span class="price">$160</span></div></div>
-                <div class="item"><div class="item-row"><span>DE CAMARÓN</span><span class="price">$155</span></div></div>
-                <div class="item"><div class="item-row"><span>CONSOMÉ DE LITRO</span><span class="price">$55</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-bebidas" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-5xl sm:text-6xl font-bold text-center text-[#ff8c00] mb-10 tracking-wider">BEBIDAS</h2>
-            <div class="auto-gallery mx-auto mb-10">
-                <div class="slides">
-                    <img src="galeBEBIDAS1.webp" class="slide active" alt="" loading="lazy">
-                    <img src="galeBEBIDAS2.webp" class="slide" alt="" loading="lazy">
-                    <img src="galeBEBIDAS3.webp" class="slide" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-8 text-base sm:text-lg">
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Bebidas sin alcohol</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Limonada mineral</span><span class="price">$40</span></div></div>
-                        <div class="item"><div class="item-row"><span>Limonada natural</span><span class="price">$35</span></div></div>
-                        <div class="item"><div class="item-row"><span>Agua de jamaica 355ml</span><span class="price">$35</span></div></div>
-                        <div class="item"><div class="item-row"><span>Agua de horchata 355ml</span><span class="price">$35</span></div></div>
-                        <div class="item"><div class="item-row"><span>Agua mineral 355ml</span><span class="price">$35</span></div></div>
-                        <div class="item"><div class="item-row"><span>Refrescos 500ml</span><span class="price">$35</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Clamatos</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Chelado</span><span class="price">$30</span></div></div>
-                        <div class="item"><div class="item-row"><span>Michelado</span><span class="price">$35</span></div></div>
-                        <div class="item"><div class="item-row"><span>Clamato vaso</span><span class="price">$35</span></div></div>
-                        <div class="item"><div class="item-row"><span>Chelado litro</span><span class="price">$40</span></div></div>
-                        <div class="item"><div class="item-row"><span>Michelado litro</span><span class="price">$45</span></div></div>
-                        <div class="item"><div class="item-row"><span>Clamato litro</span><span class="price">$50</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Bebidas preparadas</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Margarita</span><span class="price">$130</span></div></div>
-                        <div class="item"><div class="item-row"><span>Vampiro</span><span class="price">$130</span></div></div>
-                        <div class="item"><div class="item-row"><span>Paloma</span><span class="price">$130</span></div></div>
-                        <div class="item"><div class="item-row"><span>Carajillo</span><span class="price">$130</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Cervezas</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Corona Extra</span><span class="price">$37</span></div></div>
-                        <div class="item"><div class="item-row"><span>Victoria</span><span class="price">$37</span></div></div>
-                        <div class="item"><div class="item-row"><span>Modelo especial</span><span class="price">$40</span></div></div>
-                        <div class="item"><div class="item-row"><span>Negra modelo</span><span class="price">$40</span></div></div>
-                        <div class="item"><div class="item-row"><span>Ultra</span><span class="price">$40</span></div></div>
-                        <div class="item"><div class="item-row"><span>Familiar corona</span><span class="price">$80</span></div></div>
-                        <div class="item"><div class="item-row"><span>Pacífico clara</span><span class="price">$40</span></div></div>
-                        <div class="item"><div class="item-row"><span>Corona sin alcohol</span><span class="price">$40</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Whisky</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Buchanans</span><span class="price">$100</span></div></div>
-                        <div class="item"><div class="item-row"><span>Etiqueta negra</span><span class="price">$100</span></div></div>
-                        <div class="item"><div class="item-row"><span>Etiqueta roja</span><span class="price">$100</span></div></div>
-                        <div class="item"><div class="item-row"><span>Black and white</span><span class="price">$70</span></div></div>
-                        <div class="item"><div class="item-row"><span>Jack Daniels</span><span class="price">$110</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Tequilas</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Maestro dobel</span><span class="price">$140</span></div></div>
-                        <div class="item"><div class="item-row"><span>1800 cristalino</span><span class="price">$140</span></div></div>
-                        <div class="item"><div class="item-row"><span>Tradicional plata</span><span class="price">$85</span></div></div>
-                        <div class="item"><div class="item-row"><span>Tradicional reposado</span><span class="price">$85</span></div></div>
-                        <div class="item"><div class="item-row"><span>Don julio 70</span><span class="price">$150</span></div></div>
-                        <div class="item"><div class="item-row"><span>Don julio reposado</span><span class="price">$140</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Licores</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Baileys</span><span class="price">$100</span></div></div>
-                        <div class="item"><div class="item-row"><span>Licor 43</span><span class="price">$110</span></div></div>
-                        <div class="item"><div class="item-row"><span>Jagermeister</span><span class="price">$110</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Ron</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Bacardi blanco</span><span class="price">$65</span></div></div>
-                        <div class="item"><div class="item-row"><span>Matusalem clásico</span><span class="price">$120</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Brandy</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Torres 10</span><span class="price">$100</span></div></div>
-                        <div class="item"><div class="item-row"><span>Azteca de oro</span><span class="price">$70</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Vodka</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Smirnoff tamarindo</span><span class="price">$70</span></div></div>
-                        <div class="item"><div class="item-row"><span>Absolut azul</span><span class="price">$85</span></div></div>
-                        <div class="item"><div class="item-row"><span>Absolut citron</span><span class="price">$90</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Mezcal</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>400 conejos</span><span class="price">$140</span></div></div>
-                        <div class="item"><div class="item-row"><span>Mitre</span><span class="price">$130</span></div></div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">Ginebra</h3>
-                    <div class="space-y-3">
-                        <div class="item"><div class="item-row"><span>Tanqueray</span><span class="price">$140</span></div></div>
-                        <div class="item"><div class="item-row"><span>Bombay</span><span class="price">$140</span></div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-filetes" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">FILETES</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galeFILETES1.webp" class="slide active" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>FILETE EMPANIZADO</span><span class="price">$135</span></div></div>
-                <div class="item"><div class="item-row sub"><span>1/2 ORDEN</span><span class="price">$100</span></div></div>
-                <div class="item"><div class="item-row"><span>FILETE A LA DIABLA</span><span class="price">$140</span></div></div>
-                <div class="item"><div class="item-row"><span>FILETE AL CHIPOTLE</span><span class="price">$140</span></div></div>
-                <div class="item"><div class="item-row"><span>FILETE AL MOJO DE AJO</span><span class="price">$140</span></div></div>
-                <div class="item"><div class="item-row"><span>FILETE A LA PLANCHA</span><span class="price">$140</span></div></div>
-                <div class="item"><div class="item-row"><span>FILETE SALSA VERDE</span><span class="price">$140</span></div></div>
-                <div class="item"><div class="item-row"><span>FILETE A LA VERACRUZANA</span><span class="price">$150</span></div></div>
-                <div class="item"><div class="item-row"><span>FILETE CULICHI</span><span class="price">$175</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-kids" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">PARA LOS NIÑOS</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galeKIDS1.webp" class="slide active" alt="" loading="lazy">
-                    <img src="galeKIDS2.webp" class="slide" alt="" loading="lazy">
-                    <img src="galeKIDS3.webp" class="slide" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>NUGGETS DE POLLO C/PAPAS A LA FRANCESA</span><span class="price">$95</span></div></div>
-                <div class="item"><div class="item-row"><span>HAMBURGUESA DE RES C/PAPAS A LA FRANCESA</span><span class="price">$95</span></div></div>
-                <div class="item"><div class="item-row"><span>ORDEN DE PAPAS A LA FRANCESA</span><span class="price">$60</span></div></div>
-                <div class="item"><div class="item-row"><span>DEDOS DE QUESO</span><span class="price">$95</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-tacos" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">TACOS</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galeTACOS1.webp" class="slide active" alt="" loading="lazy">
-                    <img src="galeTACOS2.webp" class="slide" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>TACO CULICHI</span><span class="price">$50</span></div></div>
-                <div class="item"><div class="item-row"><span>TACO CAPEADO</span><span class="price">$50</span></div></div>
-                <div class="item"><div class="item-row"><span>TACO DE MARLIN</span><span class="price">$50</span></div></div>
-                <div class="item"><div class="item-row"><span>TACO DE ATÚN</span><span class="price">$65</span></div></div>
-                <div class="item"><div class="item-row"><span>TACO TOCINETA</span><span class="price">$60</span></div></div>
-                <div class="item"><div class="item-row"><span>QUESADILLA DE CAMARÓN</span><span class="price">$50</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-postre" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">POSTRES</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galepostre1.webp" class="slide active" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>PAY</span><span class="price">$80</span></div></div>
-                <div class="item"><div class="item-row"><span>PASTEL</span><span class="price">$90</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-pescadofrito" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">PESCADO FRITO</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galePESCADOFRITO1.webp" class="slide active" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>MOJARRA</span><span class="price">$175 kg</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-molcajetes" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
-    <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
-        <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
-        <div class="p-6 sm:p-12">
-            <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">MOLCAJETES</h2>
-            <div class="auto-gallery mx-auto mb-8">
-                <div class="slides">
-                    <img src="galeMOLCAJETES1.webp" class="slide active" alt="" loading="lazy">
-                </div>
-            </div>
-            <div class="space-y-4 text-base sm:text-lg">
-                <div class="item"><div class="item-row"><span>MOLCAJETE DE GUACAMOLE</span><span class="price">$90</span></div></div>
-                <div class="item"><div class="item-row"><span>MOLCAJETE MATA CRUDAS</span><span class="price">$199</span></div></div>
-                <div class="item"><div class="item-row"><span>MOLCAJETE CULIACÁN</span><span class="price">$199</span></div></div>
-                <div class="item"><div class="item-row"><span>MOLCAJETE SINALOA</span><span class="price">$199</span></div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
+<script src="menu-data.js"></script>
 <script src="loader.js"></script>
-<script>
-    const cards = document.querySelectorAll('.category-card');
+<script type="module">
+    import { loadSite, loadMenu, resolveImage, ratioNumber } from './culichi-db.js';
+
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const priceText = (p) => {
+        const t = String(p ?? '').trim().replace(/^\$\s*/, '');
+        return t ? '$' + t : '';
+    };
+
+    const [site, menu] = await Promise.all([loadSite(), loadMenu()]);
+    const sections = (menu.sections || []).filter((s) => s && s.nombre);
+
+    /* ---------- Configuración del sitio ---------- */
+    const root = document.documentElement.style;
+    const fondoSrc = await resolveImage(site.fondo);
+    if (fondoSrc) root.setProperty('--fondo', `url("${fondoSrc}")`);
+    root.setProperty('--gal-ratio', String(site.formatoCarrusel || '4/5').replace('/', ' / '));
+    root.setProperty('--gal-n', String(ratioNumber(site.formatoCarrusel)));
+
+    const logoSrc = await resolveImage(site.logo);
+    if (logoSrc) document.getElementById('site-logo').src = logoSrc;
+
+    const tel = String(site.telefono || '').replace(/[^\d+]/g, '');
+    const wa = String(site.whatsapp || '').replace(/\D/g, '');
+    document.getElementById('site-footer').innerHTML = [
+        site.telefono ? `<p><a class="hover:text-[#ff8c00]" href="tel:${esc(tel)}">📞 ${esc(site.telefono)}</a>${wa ? ` &nbsp;·&nbsp; <a class="hover:text-[#ff8c00]" href="https://wa.me/${esc(wa)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}</p>` : '',
+        site.direccion ? `<p>${site.maps ? `<a class="hover:text-[#ff8c00]" href="${esc(site.maps)}" target="_blank" rel="noopener">📍 ${esc(site.direccion)}</a>` : `📍 ${esc(site.direccion)}`}</p>` : ''
+    ].join('');
+
+    /* ---------- Tarjetas de secciones ---------- */
+    const covers = await Promise.all(sections.map((s) => resolveImage(s.portada)));
+    document.getElementById('cards').innerHTML = sections.map((s, i) => `
+        <button data-modal="${esc(s.id)}" class="category-card w-full aspect-video relative">
+            <div class="category-image-container ${covers[i] ? '' : 'no-cover'}">
+                ${covers[i] ? `<img src="${esc(covers[i])}" alt="${esc(s.nombre)}" decoding="async">` : ''}
+            </div>
+            <div class="absolute inset-x-0 bottom-6"><div class="category-label"><h2 class="logo-font">${esc(s.nombre)}</h2></div></div>
+        </button>`).join('');
+
+    /* ---------- Modales ---------- */
+    const renderItems = (items) => (items || []).filter((it) => it && it.nombre).map((it) => `
+        <div class="item">
+            <div class="item-row${it.sub ? ' sub' : ''}"><span>${esc(it.nombre)}</span><span class="price">${esc(priceText(it.precio))}</span></div>
+            ${it.desc ? `<p class="item-desc">${esc(it.desc)}</p>` : ''}
+        </div>`).join('');
+
+    const renderGroups = (grupos) => {
+        const gs = (grupos || []).filter((g) => g && (g.items || []).length);
+        const titled = gs.some((g) => g.titulo);
+        if (!titled) return `<div class="space-y-4 text-base sm:text-lg">${gs.map((g) => renderItems(g.items)).join('')}</div>`;
+        return `<div class="space-y-8 text-base sm:text-lg">${gs.map((g) => `
+            <div>
+                ${g.titulo ? `<h3 class="logo-font text-3xl text-white mb-4 border-b border-white/30 pb-2">${esc(g.titulo)}</h3>` : ''}
+                <div class="space-y-3">${renderItems(g.items)}</div>
+            </div>`).join('')}</div>`;
+    };
+
+    document.getElementById('modals').innerHTML = sections.map((s) => {
+        const fotos = (s.fotos || []).filter(Boolean);
+        return `
+        <div id="modal-${esc(s.id)}" class="modal fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 pointer-events-none">
+            <div class="modal-content rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative border border-white/15 shadow-2xl">
+                <button class="close-modal text-5xl text-white/80 hover:text-[#ff8c00] transition" aria-label="Cerrar">×</button>
+                <div class="p-6 sm:p-12">
+                    <h2 class="logo-font text-4xl sm:text-5xl font-bold text-center text-[#ff8c00] mb-8">${esc(s.nombre)}</h2>
+                    ${fotos.length ? `
+                    <div class="auto-gallery mb-8">
+                        <div class="slides">${fotos.map((f, i) => `<img data-ref="${esc(f)}" class="slide${i === 0 ? ' active' : ''}" alt="" loading="lazy">`).join('')}</div>
+                        ${fotos.length > 1 ? `<div class="gallery-dots">${fotos.map((_, i) => `<span class="${i === 0 ? 'on' : ''}"></span>`).join('')}</div>` : ''}
+                    </div>` : ''}
+                    ${renderGroups(s.grupos)}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    /* ---------- Animación de aparición ---------- */
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('appear');
                 observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.25 });
-    cards.forEach(card => observer.observe(card));
+    document.querySelectorAll('.category-card').forEach((card) => observer.observe(card));
 
-    // Modales
-    document.querySelectorAll('[data-modal]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const modal = document.getElementById(`modal-${btn.dataset.modal}`);
-            if (modal) {
-                modal.classList.remove('hidden', 'pointer-events-none');
-                document.body.classList.add('modal-open');
-                setTimeout(() => modal.classList.add('show'), 30);
-            }
+    /* ---------- Abrir / cerrar ---------- */
+    const timers = new Map();
+
+    function startCarousel(modal) {
+        const gallery = modal.querySelector('.auto-gallery');
+        if (!gallery) return;
+        gallery.querySelectorAll('img[data-ref]').forEach((img) => {
+            if (img.getAttribute('src')) return;
+            resolveImage(img.dataset.ref).then((src) => { if (src) img.src = src; });
         });
-    });
+        const slides = gallery.querySelectorAll('img');
+        const dots = gallery.querySelectorAll('.gallery-dots span');
+        if (slides.length < 2 || timers.has(modal)) return;
+        let current = [...slides].findIndex((s) => s.classList.contains('active'));
+        timers.set(modal, setInterval(() => {
+            slides[current].classList.remove('active');
+            dots[current]?.classList.remove('on');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('active');
+            dots[current]?.classList.add('on');
+        }, 3500));
+    }
 
-    document.querySelectorAll('.close-modal').forEach(btn => {
-        btn.addEventListener('click', () => closeModal(btn.closest('.modal')));
-    });
-
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', e => {
-            if (e.target === modal) closeModal(modal);
-        });
-    });
-
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.modal.show').forEach(closeModal);
-        }
-    });
+    function openModal(id) {
+        const modal = document.getElementById(`modal-${id}`);
+        if (!modal) return;
+        modal.classList.remove('hidden', 'pointer-events-none');
+        document.body.classList.add('modal-open');
+        startCarousel(modal);
+        setTimeout(() => modal.classList.add('show'), 30);
+    }
 
     function closeModal(modal) {
         modal.classList.remove('show');
         document.body.classList.remove('modal-open');
+        clearInterval(timers.get(modal));
+        timers.delete(modal);
         setTimeout(() => modal.classList.add('hidden', 'pointer-events-none'), 400);
     }
 
-    // Carrusel
-    function initCarousels() {
-        document.querySelectorAll('.auto-gallery').forEach(gallery => {
-            const slides = gallery.querySelectorAll('img');
-            if (slides.length < 2) return;
-            let current = 0;
-            setInterval(() => {
-                slides[current].classList.remove('active');
-                current = (current + 1) % slides.length;
-                slides[current].classList.add('active');
-            }, 3500);
-        });
-    }
-    window.addEventListener('load', initCarousels);
+    document.querySelectorAll('[data-modal]').forEach((btn) => btn.addEventListener('click', () => openModal(btn.dataset.modal)));
+    document.querySelectorAll('.close-modal').forEach((btn) => btn.addEventListener('click', () => closeModal(btn.closest('.modal'))));
+    document.querySelectorAll('.modal').forEach((modal) => modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); }));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') document.querySelectorAll('.modal.show').forEach(closeModal);
+    });
+
+    window.PageLoader.begin();
+</script>
+<script>
+    /* Si algo falla al cargar el módulo (sin internet, navegador viejo), no dejar la pantalla de carga atorada */
+    window.addEventListener('error', function () { window.PageLoader && window.PageLoader.finish(); });
 </script>
 </body>
 </html>

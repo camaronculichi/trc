@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin - Camarón Culichi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
+        :root {
+            --bg: #04263a;
+            --card: rgba(255, 255, 255, 0.06);
+            --line: rgba(255, 255, 255, 0.14);
+            --accent: #ff8c00;
+            --sea: #3fc6e0;
+        }
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background: radial-gradient(ellipse at top, #0b5878 0%, #04263a 55%, #021623 100%) fixed;
+        }
+        [hidden] { display: none !important; }
+        .logo-font { font-family: 'Playfair Display', serif; }
+
+        .card { background: var(--card); border: 1px solid var(--line); border-radius: 1.25rem; }
+        .inp {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid var(--line);
+            border-radius: 0.7rem;
+            padding: 0.6rem 0.8rem;
+            color: #fff;
+            font-size: 16px; /* evita zoom en iPhone */
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .inp:focus { border-color: var(--sea); box-shadow: 0 0 0 3px rgba(63, 198, 224, .25); }
+        .inp::placeholder { color: rgba(255, 255, 255, .4); }
+        textarea.inp { resize: vertical; min-height: 2.6rem; }
+        select.inp option { color: #000; }
+        .lbl { display: block; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: rgba(255, 255, 255, .65); margin: 0 0 .35rem; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+            border-radius: .8rem; padding: .55rem .95rem; font-size: .9rem; font-weight: 500;
+            border: 1px solid var(--line); background: rgba(255, 255, 255, .08); color: #fff;
+            cursor: pointer; transition: background .2s, transform .1s, opacity .2s; white-space: nowrap;
+        }
+        .btn:hover { background: rgba(255, 255, 255, .16); }
+        .btn:active { transform: scale(.97); }
+        .btn:disabled { opacity: .45; cursor: not-allowed; }
+        .btn-primary { background: var(--accent); border-color: var(--accent); color: #1b0f00; font-weight: 600; }
+        .btn-primary:hover { background: #ffa033; }
+        .btn-sea { background: rgba(63, 198, 224, .18); border-color: rgba(63, 198, 224, .5); }
+        .btn-danger { background: rgba(239, 68, 68, .14); border-color: rgba(239, 68, 68, .5); color: #fecaca; }
+        .btn-danger:hover { background: rgba(239, 68, 68, .28); }
+        .btn-icon { padding: .4rem .6rem; min-width: 2.2rem; }
+        .btn-sm { padding: .35rem .65rem; font-size: .8rem; }
+
+        .tab { padding: .7rem 1.1rem; border-bottom: 3px solid transparent; color: rgba(255, 255, 255, .7); font-weight: 500; }
+        .tab.on { color: #fff; border-color: var(--accent); }
+
+        details.sec > summary { list-style: none; cursor: pointer; }
+        details.sec > summary::-webkit-details-marker { display: none; }
+        details.sec[open] > summary .chev { transform: rotate(180deg); }
+        .chev { transition: transform .2s; }
+        .thumb { width: 64px; height: 40px; border-radius: .5rem; overflow: hidden; background: rgba(255, 255, 255, .08); flex-shrink: 0; }
+        .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+        .blk { border-top: 1px solid var(--line); padding-top: 1rem; margin-top: 1rem; }
+        .blk h4 { font-weight: 600; margin-bottom: .6rem; color: var(--sea); }
+
+        .cover-prev { aspect-ratio: 16 / 9; border-radius: .9rem; overflow: hidden; background: rgba(0, 0, 0, .3); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, .45); }
+        .cover-prev img { width: 100%; height: 100%; object-fit: cover; }
+
+        .ph { position: relative; border-radius: .7rem; overflow: hidden; background: rgba(0, 0, 0, .3); aspect-ratio: var(--gal-ratio, 4 / 5); }
+        .ph img { width: 100%; height: 100%; object-fit: cover; }
+        .ph-actions { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; padding: .3rem; background: linear-gradient(transparent, rgba(0, 0, 0, .75)); }
+        .ph-actions button { width: 28px; height: 28px; border-radius: 999px; background: rgba(0, 0, 0, .55); border: 1px solid rgba(255, 255, 255, .3); font-size: .85rem; }
+        .ph-actions button.del { background: rgba(220, 38, 38, .85); }
+        .ph.add { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3rem; border: 2px dashed rgba(255, 255, 255, .3); color: rgba(255, 255, 255, .75); font-size: .85rem; cursor: pointer; background: transparent; }
+        .ph.add:hover { border-color: var(--sea); color: #fff; }
+
+        .itm { background: rgba(0, 0, 0, .18); border: 1px solid var(--line); border-radius: .9rem; padding: .65rem; }
+        .itm.is-sub { margin-left: 1.25rem; border-left: 3px solid rgba(63, 198, 224, .5); }
+        .price-wrap { position: relative; width: 7.5rem; flex-shrink: 0; }
+        .price-wrap span { position: absolute; left: .7rem; top: 50%; transform: translateY(-50%); color: var(--accent); font-weight: 600; }
+        .price-wrap .inp { padding-left: 1.6rem; color: var(--accent); font-weight: 600; }
+        .itm-tools { display: flex; align-items: center; gap: .35rem; flex-wrap: wrap; margin-top: .5rem; font-size: .8rem; color: rgba(255, 255, 255, .75); }
+
+        .savebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: rgba(2, 22, 35, .92); backdrop-filter: blur(12px); border-top: 1px solid var(--line); }
+        .dot { width: 9px; height: 9px; border-radius: 999px; background: #22c55e; display: inline-block; }
+        .dot.dirty { background: var(--accent); box-shadow: 0 0 0 4px rgba(255, 140, 0, .25); }
+
+        #toast { position: fixed; left: 50%; top: 18px; transform: translate(-50%, -150%); z-index: 60; transition: transform .35s ease; max-width: calc(100vw - 32px); }
+        #toast.show { transform: translate(-50%, 0); }
+
+        .spinner { width: 18px; height: 18px; border-radius: 999px; border: 3px solid rgba(255, 255, 255, .25); border-top-color: #fff; animation: spin .8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .switch { position: relative; width: 46px; height: 26px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .switch span { position: absolute; inset: 0; border-radius: 999px; background: rgba(255, 255, 255, .2); transition: .2s; cursor: pointer; }
+        .switch span::before { content: ''; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; border-radius: 999px; background: #fff; transition: .2s; }
+        .switch input:checked + span { background: #22c55e; }
+        .switch input:checked + span::before { transform: translateX(20px); }
+
+        .ratio-demo { background: linear-gradient(135deg, var(--sea), #0d5f86); border-radius: .6rem; height: 90px; }
+    </style>
+</head>
+<body>
+
+<!-- ==================== LOGIN ==================== -->
+<section id="login-view" class="min-h-screen flex items-center justify-center p-4">
+    <form id="login-form" class="card w-full max-w-sm p-7 space-y-5 shadow-2xl">
+        <div class="text-center">
+            <img src="logo.webp" alt="Camarón Culichi" class="h-24 mx-auto drop-shadow-xl">
+            <h1 class="logo-font text-2xl mt-3">Panel de administración</h1>
+            <p class="text-white/60 text-sm mt-1">Menú Camarón Culichi</p>
+        </div>
+        <div>
+            <label class="lbl" for="lg-user">Usuario</label>
+            <input id="lg-user" class="inp" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        </div>
+        <div>
+            <label class="lbl" for="lg-pass">Contraseña</label>
+            <input id="lg-pass" class="inp" type="password" autocomplete="current-password" required>
+        </div>
+        <p id="lg-error" class="text-red-300 text-sm" hidden></p>
+        <button id="lg-btn" class="btn btn-primary w-full py-3 text-base" type="submit">Entrar</button>
+        <a href="menu.html" class="block text-center text-sm text-white/60 hover:text-white">← Volver al menú</a>
+    </form>
+</section>
+
+<!-- ==================== APP ==================== -->
+<section id="app-view" hidden>
+    <header class="sticky top-0 z-30 bg-[#021623]/90 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
+            <img id="hdr-logo" src="logo.webp" alt="" class="h-11 w-auto">
+            <div class="flex-1 min-w-0">
+                <div class="font-semibold leading-tight">Administrador</div>
+                <div id="hdr-mode" class="text-xs text-white/55 truncate"></div>
+            </div>
+            <a id="view-menu" href="menu.html" target="_blank" class="btn btn-sm">Ver menú ↗</a>
+            <button id="logout" class="btn btn-sm">Salir</button>
+        </div>
+        <nav class="max-w-3xl mx-auto px-2 flex">
+            <button class="tab on" data-tab="menu">🍤 Menú</button>
+            <button class="tab" data-tab="site">⚙️ Sitio</button>
+        </nav>
+    </header>
+
+    <div id="loading" class="max-w-3xl mx-auto p-10 flex flex-col items-center gap-3 text-white/70">
+        <div class="spinner"></div> Cargando datos…
+    </div>
+
+    <div id="notice" class="max-w-3xl mx-auto px-4 pt-4" hidden></div>
+
+    <!-- ===== Pestaña MENÚ ===== -->
+    <main id="tab-menu" class="max-w-3xl mx-auto px-4 pt-4 pb-32 space-y-3" hidden>
+        <p class="text-white/65 text-sm">Toca una sección para editar sus platillos, precios, portada y fotos. Los cambios se publican al presionar <b>Guardar</b>.</p>
+        <div id="sections" class="space-y-3"></div>
+        <button class="btn btn-sea w-full py-3" data-action="sec-add">＋ Agregar sección</button>
+    </main>
+
+    <!-- ===== Pestaña SITIO ===== -->
+    <main id="tab-site" class="max-w-3xl mx-auto px-4 pt-4 pb-32 space-y-4" hidden>
+        <div class="card p-5">
+            <h3 class="font-semibold text-lg mb-3">Logo</h3>
+            <div class="flex items-center gap-4 flex-wrap">
+                <div class="w-28 h-28 rounded-xl bg-black/30 flex items-center justify-center p-2"><img data-site-img="logo" class="max-w-full max-h-full object-contain" alt=""></div>
+                <div class="flex gap-2 flex-wrap">
+                    <button class="btn btn-sea" data-action="site-img" data-key="logo">📷 Cambiar logo</button>
+                    <button class="btn" data-action="site-reset" data-key="logo">Restaurar original</button>
+                </div>
+            </div>
+            <p class="text-xs text-white/50 mt-2">Usa un PNG con fondo transparente para que se vea mejor.</p>
+        </div>
+
+        <div class="card p-5">
+            <h3 class="font-semibold text-lg mb-3">Fondo del menú</h3>
+            <div class="flex items-center gap-4 flex-wrap">
+                <div class="w-24 h-36 rounded-xl overflow-hidden bg-black/30"><img data-site-img="fondo" class="w-full h-full object-cover" alt=""></div>
+                <div class="flex gap-2 flex-wrap">
+                    <button class="btn btn-sea" data-action="site-img" data-key="fondo">📷 Cambiar fondo</button>
+                    <button class="btn" data-action="site-reset" data-key="fondo">Restaurar original</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-5">
+            <div class="flex items-center justify-between gap-3 mb-3">
+                <h3 class="font-semibold text-lg">Promoción al abrir la página</h3>
+                <label class="switch"><input type="checkbox" data-site="promoActiva"><span></span></label>
+            </div>
+            <div class="flex items-center gap-4 flex-wrap">
+                <div class="w-28 h-36 rounded-xl overflow-hidden bg-black/30"><img data-site-img="promo" class="w-full h-full object-cover" alt=""></div>
+                <div class="flex gap-2 flex-wrap">
+                    <button class="btn btn-sea" data-action="site-img" data-key="promo">📷 Cambiar promoción</button>
+                </div>
+            </div>
+            <p class="text-xs text-white/50 mt-2">Si el interruptor está apagado, la promoción no aparece en la página de inicio.</p>
+        </div>
+
+        <div class="card p-5 space-y-4">
+            <h3 class="font-semibold text-lg">Enlaces y teléfonos</h3>
+            <div><label class="lbl">Teléfono (se muestra en el menú)</label><input class="inp" data-site="telefono" inputmode="tel" placeholder="871 463 2883"></div>
+            <div><label class="lbl">WhatsApp (número con lada de país, ej. 528714632883)</label><input class="inp" data-site="whatsapp" inputmode="tel" placeholder="528714632883"></div>
+            <div><label class="lbl">Facebook (enlace)</label><input class="inp" data-site="facebook" inputmode="url" placeholder="https://facebook.com/..."></div>
+            <div><label class="lbl">Google Maps / "Recomiéndanos" (enlace)</label><input class="inp" data-site="maps" inputmode="url" placeholder="https://maps.app.goo.gl/..."></div>
+            <div><label class="lbl">Dirección (se muestra en el menú)</label><input class="inp" data-site="direccion" placeholder="Calle, número, ciudad"></div>
+        </div>
+
+        <div class="card p-5">
+            <h3 class="font-semibold text-lg mb-3">Formato de las fotos del carrusel</h3>
+            <div class="flex gap-4 items-center">
+                <select class="inp flex-1" data-site="formatoCarrusel">
+                    <option value="4/5">Vertical 4:5 (recomendado)</option>
+                    <option value="3/4">Vertical 3:4</option>
+                    <option value="9/16">Vertical 9:16 (tipo historia)</option>
+                    <option value="1/1">Cuadrado 1:1</option>
+                    <option value="16/9">Horizontal 16:9</option>
+                </select>
+                <div id="ratio-demo" class="ratio-demo"></div>
+            </div>
+            <p class="text-xs text-white/50 mt-2">Así se verán las fotos dentro de cada sección del menú.</p>
+        </div>
+    </main>
+
+    <div class="savebar" id="savebar" hidden>
+        <div class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
+            <span id="save-dot" class="dot"></span>
+            <span id="save-status" class="text-sm text-white/80 flex-1 min-w-0 truncate">Publicado</span>
+            <button id="discard" class="btn btn-sm" disabled>Descartar</button>
+            <button id="save" class="btn btn-primary" disabled>Guardar</button>
+        </div>
+    </div>
+</section>
+
+<div id="toast" class="card px-4 py-3 text-sm shadow-2xl bg-[#03202f]"></div>
+<input type="file" id="file-input" accept="image/*" hidden>
+
+<script src="menu-data.js"></script>
+<script type="module">
+    import {
+        app, ADMIN_EMAIL, USING_EMULATOR, loadSite, loadMenu, saveSite, saveMenu,
+        resolveImage, uploadImage, deleteImage, isDbImage, ratioNumber
+    } from './culichi-db.js';
+    import {
+        getAuth, connectAuthEmulator, signInWithEmailAndPassword, signOut, onAuthStateChanged
+    } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+    const auth = getAuth(app);
+    if (USING_EMULATOR) connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
+
+    const $ = (s, r = document) => r.querySelector(s);
+    const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const DEF = window.CULICHI_DEFAULTS;
+
+    /* ==================== Estado ==================== */
+    let site = null;
+    let menu = null;
+    let dirty = false;
+    let savedRefs = new Set();          // fotos que usa la versión publicada
+    const uploaded = new Set();         // fotos subidas en esta sesión
+    const openSecs = new Set();         // secciones abiertas (por id)
+
+    /* ==================== Utilidades ==================== */
+    let toastTimer;
+    function toast(msg, ms = 2800) {
+        const t = $('#toast');
+        t.innerHTML = msg;
+        t.classList.add('show');
+        clearTimeout(toastTimer);
+        if (ms) toastTimer = setTimeout(() => t.classList.remove('show'), ms);
+    }
+
+    function setDirty(v = true) {
+        dirty = v;
+        $('#save-dot').classList.toggle('dirty', v);
+        $('#save-status').textContent = v ? 'Sin guardar' : 'Publicado';
+        $('#save').disabled = !v;
+        $('#discard').disabled = !v;
+    }
+
+    function collectRefs() {
+        const refs = new Set();
+        const add = (r) => { if (isDbImage(r)) refs.add(r); };
+        ['logo', 'fondo', 'promo'].forEach((k) => add(site[k]));
+        menu.sections.forEach((s) => { add(s.portada); (s.fotos || []).forEach(add); });
+        return refs;
+    }
+
+    function hydrate(root = document) {
+        $$('img[data-ref]', root).forEach((img) => {
+            const ref = img.dataset.ref;
+            if (!ref) { img.removeAttribute('src'); return; }
+            resolveImage(ref).then((src) => { if (img.dataset.ref === ref && src) img.src = src; });
+        });
+    }
+
+    const imgTag = (ref, cls = '') => ref ? `<img data-ref="${esc(ref)}" class="${cls}" alt="" loading="lazy">` : '';
+
+    function slug(t) {
+        return String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'seccion';
+    }
+
+    /* ---------- Elegir y comprimir fotos ---------- */
+    function pickFiles(multiple = false) {
+        return new Promise((resolve) => {
+            const input = $('#file-input');
+            input.value = '';
+            input.multiple = multiple;
+            input.onchange = () => resolve([...input.files]);
+            input.click();
+        });
+    }
+
+    function loadImg(file) {
+        return new Promise((resolve, reject) => {
+            const url = URL.createObjectURL(file);
+            const img = new Image();
+            img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+            img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('No se pudo leer la imagen')); };
+            img.src = url;
+        });
+    }
+
+    const LIMIT = 900000; // Firestore guarda hasta ~1 MB por documento
+
+    async function compress(file, { max = 1400, quality = 0.82, alpha = false } = {}) {
+        const img = await loadImg(file);
+        let scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+        for (let attempt = 0; attempt < 6; attempt++) {
+            const w = Math.round(img.naturalWidth * scale);
+            const h = Math.round(img.naturalHeight * scale);
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(img, 0, 0, w, h);
+            for (let q = quality; q >= 0.5; q -= 0.1) {
+                let url = canvas.toDataURL('image/webp', q);
+                if (!url.startsWith('data:image/webp')) {
+                    // Navegadores que no generan WebP
+                    url = alpha ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', q);
+                }
+                if (url.length < LIMIT) return { url, w, h };
+            }
+            scale *= 0.8;
+        }
+        throw new Error('La imagen es demasiado grande, intenta con otra');
+    }
+
+    const IMG_OPTS = {
+        portada: { max: 1400 },
+        foto: { max: 1400 },
+        fondo: { max: 1400 },
+        promo: { max: 1400 },
+        logo: { max: 700, quality: 0.9, alpha: true }
+    };
+
+    async function uploadFiles(files, kind) {
+        const refs = [];
+        for (let i = 0; i < files.length; i++) {
+            toast(`<span class="inline-flex items-center gap-2"><span class="spinner"></span> Subiendo foto ${files.length > 1 ? `${i + 1} de ${files.length}` : ''}…</span>`, 0);
+            try {
+                const { url, w, h } = await compress(files[i], IMG_OPTS[kind]);
+                const ref = await uploadImage(url, { w, h, tipo: kind });
+                uploaded.add(ref);
+                refs.push(ref);
+            } catch (e) {
+                console.error(e);
+                toast('❌ ' + friendlyError(e), 5000);
+                return refs;
+            }
+        }
+        toast(files.length > 1 ? `✅ ${files.length} fotos agregadas` : '✅ Foto agregada');
+        return refs;
+    }
+
+    function friendlyError(e) {
+        const c = e && e.code;
+        if (c === 'permission-denied') return 'Sin permiso para guardar. Revisa que las reglas de Firestore estén publicadas.';
+        if (c === 'unavailable' || (e && e.message === 'timeout')) return 'Sin conexión con Firebase. Revisa tu internet.';
+        if (c === 'auth/invalid-credential' || c === 'auth/wrong-password' || c === 'auth/user-not-found' || c === 'auth/invalid-email') return 'Usuario o contraseña incorrectos.';
+        if (c === 'auth/too-many-requests') return 'Demasiados intentos. Espera unos minutos.';
+        if (c === 'auth/network-request-failed') return 'Sin conexión. Revisa tu internet.';
+        return (e && e.message) || 'Ocurrió un error';
+    }
+
+    /* ==================== Login ==================== */
+    $('#login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const user = $('#lg-user').value.trim().toLowerCase();
+        const pass = $('#lg-pass').value;
+        const email = user.includes('@') ? user : `${user}@camaronculichi.app`;
+        const btn = $('#lg-btn');
+        const err = $('#lg-error');
+        err.hidden = true;
+        btn.disabled = true;
+        btn.textContent = 'Entrando…';
+        try {
+            await signInWithEmailAndPassword(auth, email, pass);
+        } catch (ex) {
+            err.textContent = friendlyError(ex);
+            err.hidden = false;
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Entrar';
+        }
+    });
+
+    $('#logout').addEventListener('click', async () => {
+        if (dirty && !confirm('Tienes cambios sin guardar. ¿Salir de todos modos?')) return;
+        dirty = false;
+        await signOut(auth);
+        location.reload();
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user && user.email === ADMIN_EMAIL) {
+            $('#login-view').hidden = true;
+            $('#app-view').hidden = false;
+            $('#hdr-mode').textContent = USING_EMULATOR ? '⚠️ Modo prueba (emulador local)' : 'Conectado como culichi';
+            await loadAll();
+        } else {
+            if (user) {
+                await signOut(auth);
+                $('#lg-error').textContent = 'Este usuario no tiene permiso de administrador.';
+                $('#lg-error').hidden = false;
+            }
+            $('#login-view').hidden = false;
+            $('#app-view').hidden = true;
+        }
+    });
+
+    /* ==================== Cargar datos ==================== */
+    async function loadAll() {
+        $('#loading').hidden = false;
+        $('#tab-menu').hidden = $('#tab-site').hidden = true;
+        $('#savebar').hidden = true;
+        $('#notice').hidden = true;
+        try {
+            [site, menu] = await Promise.all([loadSite({ fromServer: true, timeout: 15000 }), loadMenu({ fromServer: true, timeout: 15000 })]);
+        } catch (e) {
+            console.error(e);
+            $('#loading').innerHTML = `<p class="text-center">❌ ${esc(friendlyError(e))}</p><button class="btn btn-sea" onclick="location.reload()">Reintentar</button>`;
+            return;
+        }
+        const firstTime = !site._fromDb || !menu._fromDb;
+        delete site._fromDb;
+        delete menu._fromDb;
+        savedRefs = firstTime ? new Set() : collectRefs();
+
+        $('#loading').hidden = true;
+        $('#savebar').hidden = false;
+        if (firstTime) {
+            $('#notice').innerHTML = `<div class="card p-4 text-sm border-amber-400/50 bg-amber-400/10">📢 Todavía no hay un menú guardado en Firebase. Estás viendo el menú actual del sitio; presiona <b>Guardar</b> una vez para que quede guardado.</div>`;
+            $('#notice').hidden = false;
+        }
+        renderSections();
+        renderSite();
+        showTab(currentTab);
+        setDirty(firstTime);
+    }
+
+    /* ==================== Pestañas ==================== */
+    let currentTab = 'menu';
+    function showTab(t) {
+        currentTab = t;
+        $$('.tab').forEach((b) => b.classList.toggle('on', b.dataset.tab === t));
+        $('#tab-menu').hidden = t !== 'menu';
+        $('#tab-site').hidden = t !== 'site';
+    }
+    $$('.tab').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+
+    /* ==================== Render de secciones ==================== */
+    function itemHTML(it, s, g, i, n) {
+        const showDesc = !!it.desc || it._showDesc;
+        return `
+        <div class="itm ${it.sub ? 'is-sub' : ''}">
+            <input class="inp" placeholder="Nombre del platillo" value="${esc(it.nombre)}" data-s="${s}" data-g="${g}" data-i="${i}" data-f="nombre">
+            <div class="flex items-center gap-2 mt-2">
+                <div class="price-wrap"><span>$</span><input class="inp" placeholder="0" value="${esc(String(it.precio ?? '').replace(/^\$\s*/, ''))}" data-s="${s}" data-g="${g}" data-i="${i}" data-f="precio" aria-label="Precio"></div>
+                <span class="flex-1"></span>
+                <button class="btn btn-icon" title="Subir" data-action="item-up" data-s="${s}" data-g="${g}" data-i="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
+                <button class="btn btn-icon" title="Bajar" data-action="item-down" data-s="${s}" data-g="${g}" data-i="${i}" ${i === n - 1 ? 'disabled' : ''}>↓</button>
+                <button class="btn btn-icon btn-danger" title="Eliminar platillo" data-action="item-del" data-s="${s}" data-g="${g}" data-i="${i}">🗑</button>
+            </div>
+            ${showDesc ? `<textarea class="inp mt-2 text-sm" rows="2" placeholder="Descripción (ingredientes, tamaño, etc.)" data-s="${s}" data-g="${g}" data-i="${i}" data-f="desc">${esc(it.desc)}</textarea>` : ''}
+            <div class="itm-tools">
+                <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" ${it.sub ? 'checked' : ''} data-s="${s}" data-g="${g}" data-i="${i}" data-f="sub"> Sub-opción (ej. 1/2 orden)</label>
+                ${showDesc ? '' : `<button class="btn btn-sm ml-auto" data-action="desc-show" data-s="${s}" data-g="${g}" data-i="${i}">＋ Descripción</button>`}
+            </div>
+        </div>`;
+    }
+
+    function groupHTML(grp, s, g, ng) {
+        const showTitle = ng > 1 || grp.titulo;
+        const items = grp.items || [];
+        return `
+        <div class="space-y-2 ${g > 0 ? 'pt-4' : ''}">
+            ${showTitle ? `
+            <div class="flex gap-2 items-end">
+                <div class="flex-1"><label class="lbl">Subtítulo</label><input class="inp font-semibold" placeholder="Ej. Cervezas" value="${esc(grp.titulo)}" data-s="${s}" data-g="${g}" data-f="titulo"></div>
+                <button class="btn btn-icon btn-danger" title="Eliminar subgrupo" data-action="group-del" data-s="${s}" data-g="${g}">🗑</button>
+            </div>` : ''}
+            ${items.map((it, i) => itemHTML(it, s, g, i, items.length)).join('')}
+            <button class="btn btn-sm btn-sea" data-action="item-add" data-s="${s}" data-g="${g}">＋ Agregar platillo${showTitle && grp.titulo ? ` a ${esc(grp.titulo)}` : ''}</button>
+        </div>`;
+    }
+
+    function sectionHTML(sec, s, n) {
+        const count = (sec.grupos || []).reduce((a, g) => a + (g.items || []).length, 0);
+        const fotos = sec.fotos || [];
+        const grupos = sec.grupos || [];
+        return `
+        <details class="sec card overflow-hidden" data-sid="${esc(sec.id)}" ${openSecs.has(sec.id) ? 'open' : ''}>
+            <summary class="flex items-center gap-3 p-3">
+                <div class="thumb">${imgTag(sec.portada)}</div>
+                <div class="flex-1 min-w-0">
+                    <div class="font-semibold truncate">${esc(sec.nombre) || '<span class="text-white/40">Sin nombre</span>'}</div>
+                    <div class="text-xs text-white/55">${count} platillo${count === 1 ? '' : 's'} · ${fotos.length} foto${fotos.length === 1 ? '' : 's'}</div>
+                </div>
+                <button class="btn btn-icon btn-sm" title="Subir sección" data-action="sec-up" data-s="${s}" ${s === 0 ? 'disabled' : ''}>↑</button>
+                <button class="btn btn-icon btn-sm" title="Bajar sección" data-action="sec-down" data-s="${s}" ${s === n - 1 ? 'disabled' : ''}>↓</button>
+                <span class="chev text-white/60 px-1">▾</span>
+            </summary>
+            <div class="px-4 pb-5">
+                <label class="lbl">Nombre de la sección</label>
+                <input class="inp font-semibold" value="${esc(sec.nombre)}" data-s="${s}" data-f="nombre">
+
+                <div class="blk">
+                    <h4>Portada</h4>
+                    <div class="cover-prev">${sec.portada ? imgTag(sec.portada) : 'Sin portada'}</div>
+                    <div class="flex gap-2 mt-2 flex-wrap">
+                        <button class="btn btn-sea btn-sm" data-action="cover-set" data-s="${s}">📷 ${sec.portada ? 'Cambiar portada' : 'Agregar portada'}</button>
+                        ${sec.portada ? `<button class="btn btn-danger btn-sm" data-action="cover-del" data-s="${s}">Eliminar portada</button>` : ''}
+                    </div>
+                </div>
+
+                <div class="blk">
+                    <h4>Fotos del carrusel</h4>
+                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                        ${fotos.map((f, k) => `
+                        <div class="ph">
+                            ${imgTag(f)}
+                            <div class="ph-actions">
+                                <button title="Mover a la izquierda" data-action="foto-left" data-s="${s}" data-k="${k}" ${k === 0 ? 'disabled style="opacity:.3"' : ''}>‹</button>
+                                <button class="del" title="Eliminar foto" data-action="foto-del" data-s="${s}" data-k="${k}">✕</button>
+                                <button title="Mover a la derecha" data-action="foto-right" data-s="${s}" data-k="${k}" ${k === fotos.length - 1 ? 'disabled style="opacity:.3"' : ''}>›</button>
+                            </div>
+                        </div>`).join('')}
+                        <button class="ph add" data-action="foto-add" data-s="${s}"><span class="text-2xl">＋</span>Agregar fotos</button>
+                    </div>
+                </div>
+
+                <div class="blk">
+                    <h4>Platillos y precios</h4>
+                    ${grupos.map((g, gi) => groupHTML(g, s, gi, grupos.length)).join('')}
+                    <button class="btn btn-sm mt-4" data-action="group-add" data-s="${s}">＋ Agregar subgrupo (ej. Cervezas, Tequilas)</button>
+                </div>
+
+                <div class="blk flex justify-end">
+                    <button class="btn btn-danger btn-sm" data-action="sec-del" data-s="${s}">Eliminar sección completa</button>
+                </div>
+            </div>
+        </details>`;
+    }
+
+    function renderSections() {
+        const box = $('#sections');
+        box.innerHTML = menu.sections.map((sec, s) => sectionHTML(sec, s, menu.sections.length)).join('');
+        hydrate(box);
+    }
+
+    /* ---------- Edición en vivo (sin redibujar para no perder el cursor) ---------- */
+    function target(el) {
+        const s = menu.sections[+el.dataset.s];
+        if (el.dataset.i !== undefined) return s.grupos[+el.dataset.g].items[+el.dataset.i];
+        if (el.dataset.g !== undefined) return s.grupos[+el.dataset.g];
+        return s;
+    }
+
+    $('#sections').addEventListener('input', (e) => {
+        const el = e.target;
+        if (!el.dataset.f || el.type === 'checkbox') return;
+        let v = el.value;
+        if (el.dataset.f === 'precio') v = v.replace(/^\$\s*/, '');
+        target(el)[el.dataset.f] = v;
+        if (el.dataset.f === 'nombre' && el.dataset.i === undefined) {
+            el.closest('details').querySelector('summary .font-semibold').textContent = v || 'Sin nombre';
+        }
+        setDirty();
+    });
+
+    $('#sections').addEventListener('change', (e) => {
+        const el = e.target;
+        if (el.type !== 'checkbox' || !el.dataset.f) return;
+        target(el)[el.dataset.f] = el.checked;
+        el.closest('.itm').classList.toggle('is-sub', el.checked);
+        setDirty();
+    });
+
+    $('#sections').addEventListener('toggle', (e) => {
+        const d = e.target;
+        if (!d.matches || !d.matches('details.sec')) return;
+        if (d.open) openSecs.add(d.dataset.sid); else openSecs.delete(d.dataset.sid);
+    }, true);
+
+    const swap = (arr, a, b) => { if (b < 0 || b >= arr.length) return; [arr[a], arr[b]] = [arr[b], arr[a]]; };
+
+    document.addEventListener('click', async (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn || btn.disabled) return;
+        if (btn.closest('summary')) e.preventDefault();
+        const a = btn.dataset.action;
+        const s = +btn.dataset.s, g = +btn.dataset.g, i = +btn.dataset.i, k = +btn.dataset.k;
+        const sec = menu && menu.sections[s];
+        let changed = true;
+
+        switch (a) {
+            case 'sec-add': {
+                const nombre = (prompt('Nombre de la nueva sección:', '') || '').trim();
+                if (!nombre) return;
+                const id = slug(nombre) + '-' + Math.random().toString(36).slice(2, 6);
+                menu.sections.push({ id, nombre: nombre.toUpperCase(), portada: '', fotos: [], grupos: [{ titulo: '', items: [] }] });
+                openSecs.add(id);
+                renderSections();
+                setDirty();
+                document.querySelector(`details[data-sid="${id}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+            case 'sec-del':
+                if (!confirm(`¿Eliminar la sección "${sec.nombre}" con todos sus platillos?`)) return;
+                menu.sections.splice(s, 1);
+                break;
+            case 'sec-up': swap(menu.sections, s, s - 1); break;
+            case 'sec-down': swap(menu.sections, s, s + 1); break;
+
+            case 'cover-set': {
+                const files = await pickFiles(false);
+                if (!files.length) return;
+                const [ref] = await uploadFiles(files, 'portada');
+                if (!ref) return;
+                sec.portada = ref;
+                break;
+            }
+            case 'cover-del':
+                if (!confirm('¿Eliminar la portada de esta sección?')) return;
+                sec.portada = '';
+                break;
+
+            case 'foto-add': {
+                const files = await pickFiles(true);
+                if (!files.length) return;
+                const refs = await uploadFiles(files, 'foto');
+                if (!refs.length) return;
+                sec.fotos = [...(sec.fotos || []), ...refs];
+                break;
+            }
+            case 'foto-del': sec.fotos.splice(k, 1); break;
+            case 'foto-left': swap(sec.fotos, k, k - 1); break;
+            case 'foto-right': swap(sec.fotos, k, k + 1); break;
+
+            case 'item-add': {
+                sec.grupos[g].items.push({ nombre: '', precio: '', desc: '', sub: false });
+                renderSections();
+                setDirty();
+                const inputs = $$(`input[data-s="${s}"][data-g="${g}"][data-f="nombre"][data-i]`);
+                inputs[inputs.length - 1]?.focus();
+                return;
+            }
+            case 'item-del': {
+                const it = sec.grupos[g].items[i];
+                if (it.nombre && !confirm(`¿Eliminar "${it.nombre}"?`)) return;
+                sec.grupos[g].items.splice(i, 1);
+                break;
+            }
+            case 'item-up': swap(sec.grupos[g].items, i, i - 1); break;
+            case 'item-down': swap(sec.grupos[g].items, i, i + 1); break;
+            case 'desc-show': {
+                sec.grupos[g].items[i]._showDesc = true;
+                renderSections();
+                $(`textarea[data-s="${s}"][data-g="${g}"][data-i="${i}"]`)?.focus();
+                return;
+            }
+
+            case 'group-add': {
+                const titulo = (prompt('Nombre del subgrupo (ej. Cervezas):', '') || '').trim();
+                if (!titulo) return;
+                // Si la sección tenía un solo grupo vacío sin título, se reutiliza
+                const only = sec.grupos.length === 1 && !sec.grupos[0].titulo && !sec.grupos[0].items.length;
+                if (only) sec.grupos[0].titulo = titulo; else sec.grupos.push({ titulo, items: [] });
+                break;
+            }
+            case 'group-del': {
+                const grp = sec.grupos[g];
+                if (grp.items.length && !confirm(`¿Eliminar el subgrupo "${grp.titulo || 'sin título'}" y sus ${grp.items.length} platillos?`)) return;
+                sec.grupos.splice(g, 1);
+                if (!sec.grupos.length) sec.grupos.push({ titulo: '', items: [] });
+                break;
+            }
+
+            case 'site-img': {
+                const key = btn.dataset.key;
+                const files = await pickFiles(false);
+                if (!files.length) return;
+                const [ref] = await uploadFiles(files, key);
+                if (!ref) return;
+                site[key] = ref;
+                renderSite();
+                setDirty();
+                return;
+            }
+            case 'site-reset': {
+                const key = btn.dataset.key;
+                site[key] = DEF.site[key];
+                renderSite();
+                setDirty();
+                return;
+            }
+            default:
+                changed = false;
+        }
+        if (changed) {
+            renderSections();
+            setDirty();
+        }
+    });
+
+    /* ==================== Pestaña Sitio ==================== */
+    function renderSite() {
+        $$('[data-site]').forEach((el) => {
+            const v = site[el.dataset.site];
+            if (el.type === 'checkbox') el.checked = !!v; else el.value = v ?? '';
+        });
+        $$('[data-site-img]').forEach((img) => { img.dataset.ref = site[img.dataset.siteImg] || ''; });
+        hydrate($('#tab-site'));
+        resolveImage(site.logo).then((src) => { if (src) $('#hdr-logo').src = src; });
+        updateRatioDemo();
+    }
+
+    function updateRatioDemo() {
+        const n = ratioNumber(site.formatoCarrusel);
+        $('#ratio-demo').style.width = Math.round(90 * n) + 'px';
+        document.documentElement.style.setProperty('--gal-ratio', String(site.formatoCarrusel || '4/5').replace('/', ' / '));
+    }
+
+    $('#tab-site').addEventListener('input', (e) => {
+        const el = e.target;
+        if (!el.dataset.site) return;
+        site[el.dataset.site] = el.type === 'checkbox' ? el.checked : el.value.trim();
+        if (el.dataset.site === 'formatoCarrusel') updateRatioDemo();
+        setDirty();
+    });
+    $('#tab-site').addEventListener('change', (e) => {
+        const el = e.target;
+        if (!el.dataset.site) return;
+        site[el.dataset.site] = el.type === 'checkbox' ? el.checked : el.value.trim();
+        if (el.dataset.site === 'formatoCarrusel') updateRatioDemo();
+        setDirty();
+    });
+
+    /* ==================== Guardar / descartar ==================== */
+    function cleanMenu() {
+        return {
+            sections: menu.sections.map((s) => ({
+                id: s.id,
+                nombre: String(s.nombre || '').trim(),
+                portada: s.portada || '',
+                fotos: (s.fotos || []).filter(Boolean),
+                grupos: (s.grupos || []).map((g) => ({
+                    titulo: String(g.titulo || '').trim(),
+                    items: (g.items || []).filter((it) => String(it.nombre || '').trim()).map((it) => ({
+                        nombre: String(it.nombre).trim(),
+                        precio: String(it.precio ?? '').trim().replace(/^\$\s*/, ''),
+                        desc: String(it.desc || '').trim(),
+                        sub: !!it.sub
+                    }))
+                }))
+            }))
+        };
+    }
+
+    $('#save').addEventListener('click', async () => {
+        const unnamed = menu.sections.findIndex((s) => !String(s.nombre || '').trim());
+        if (unnamed >= 0) {
+            showTab('menu');
+            toast('⚠️ Hay una sección sin nombre', 4000);
+            return;
+        }
+        const btn = $('#save');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Guardando…';
+        try {
+            const clean = cleanMenu();
+            await saveMenu(clean);
+            await saveSite(site);
+            menu = clean;
+            // Borrar de Firebase las fotos que ya no se usan
+            const now = collectRefs();
+            const orphans = [...new Set([...savedRefs, ...uploaded])].filter((r) => !now.has(r));
+            await Promise.allSettled(orphans.map(deleteImage));
+            savedRefs = now;
+            uploaded.clear();
+            $('#notice').hidden = true;
+            renderSections();
+            setDirty(false);
+            toast('✅ ¡Listo! Los cambios ya están publicados en el menú', 3500);
+        } catch (e) {
+            console.error(e);
+            toast('❌ ' + esc(friendlyError(e)), 6000);
+            setDirty(true);
+        } finally {
+            btn.textContent = 'Guardar';
+        }
+    });
+
+    $('#discard').addEventListener('click', async () => {
+        if (!confirm('¿Descartar todos los cambios que no has guardado?')) return;
+        const unused = [...uploaded].filter((r) => !savedRefs.has(r));
+        await Promise.allSettled(unused.map(deleteImage));
+        uploaded.clear();
+        dirty = false;
+        await loadAll();
+        toast('Cambios descartados');
+    });
+
+    window.addEventListener('beforeunload', (e) => {
+        if (dirty) { e.preventDefault(); e.returnValue = ''; }
+    });
+
+    if (USING_EMULATOR) $('#view-menu').href = 'menu.html?emu=1';
+</script>
+</body>
+</html>

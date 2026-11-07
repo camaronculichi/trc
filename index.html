@@ -197,11 +197,11 @@
   
   <!-- Íconos sociales -->
   <div class="header">
-    <a href="https://www.facebook.com/share/1CFk2kdY1V/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">
+    <a id="lnk-facebook" href="https://www.facebook.com/share/1CFk2kdY1V/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">
       <img src="face.webp" alt="Facebook" class="social-icon">
     </a>
    
-    <a href="https://wa.me/528714632883" target="_blank" rel="noopener noreferrer">
+    <a id="lnk-whatsapp" href="https://wa.me/528714632883" target="_blank" rel="noopener noreferrer">
       <img src="whats.webp" alt="WhatsApp" class="social-icon">
     </a>
   </div>
@@ -209,7 +209,7 @@
   <!-- Promoción (aparece primero) -->
   <div class="promo-modal" id="promoModal">
     <div class="promo-content">
-      <img src="procion.webp" alt="Promoción">
+      <img id="promo-img" src="procion.webp" alt="Promoción">
       <div class="close-promo" onclick="closePromo()">×</div>
     </div>
   </div>
@@ -218,7 +218,7 @@
     <h1></h1>
     <div class="buttons">
       <a href="menu.html" class="btn btn-menu">MENÚ</a>
-      <a href="https://maps.app.goo.gl/SBPpbC7itaPebRxJ7" target="_blank" class="btn btn-small">RECOMIENDANOS</a>
+      <a id="lnk-maps" href="https://maps.app.goo.gl/SBPpbC7itaPebRxJ7" target="_blank" rel="noopener" class="btn btn-small">RECOMIENDANOS</a>
       <a href="factura.html" class="btn btn-small">FACTURA</a>
     </div>
   </div>
@@ -235,6 +235,23 @@
       }
     });
   </script>
+  <script src="menu-data.js"></script>
   <script src="loader.js"></script>
+  <script type="module">
+    // Aplica los enlaces y la promoción configurados desde admin.html
+    import { loadSite, resolveImage } from "./culichi-db.js";
+    const site = await loadSite();
+    const set = (id, url) => { const a = document.getElementById(id); if (a && url) a.href = url; };
+    set("lnk-facebook", site.facebook);
+    const wa = String(site.whatsapp || "").replace(/\D/g, "");
+    if (wa) set("lnk-whatsapp", "https://wa.me/" + wa);
+    set("lnk-maps", site.maps);
+    if (!site.promoActiva) {
+      closePromo();
+    } else if (site.promo && site.promo !== "procion.webp") {
+      const src = await resolveImage(site.promo);
+      if (src) document.getElementById("promo-img").src = src;
+    }
+  </script>
 </body>
 </html>
